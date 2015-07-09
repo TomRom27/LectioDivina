@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1BA44B67-D18B-438F-A394-CD2F3CD18DF7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LectioDivina.Service</RootNamespace>
+    <AssemblyName>LectioDivinaService</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HtmlText.cs" />
+    <Compile Include="Localization.cs" />
+    <Compile Include="OnJestPostMaker.cs" />
+    <Compile Include="MailTransport.cs" />
+    <Compile Include="LectioDivinaGenerator.cs" />
+    <Compile Include="NotificationEventArgs.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AENetMail\AE.Net.Mail.csproj">
+      <Project>{68e9cf8c-ab54-4cc7-a34f-c7f469e4efe0}</Project>
+      <Name>AE.Net.Mail</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LectioDivinaModel\LectioDivinaModel.csproj">
+      <Project>{c3960368-d106-494b-ae0c-348f56efae3c}</Project>
+      <Name>LectioDivinaModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvvmLight.Extensions\MvvmLight.Extensions.csproj">
+      <Project>{6efa876b-1755-4d8b-97cb-b189a213115d}</Project>
+      <Name>MvvmLight.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OnJestSlowoProxy\OnJestSlowoProxy.csproj">
+      <Project>{394603d2-a8a4-4dfa-a0e4-f09557bda8e5}</Project>
+      <Name>OnJestSlowoProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WordAutomation\WordAutomation.csproj">
+      <Project>{8868df2b-d293-40dc-9348-f1f62140dfc3}</Project>
+      <Name>WordAutomation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

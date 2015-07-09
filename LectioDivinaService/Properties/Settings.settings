@@ -1,0 +1,144 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LectioDivina.Service.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SundayKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">sunday</Value>
+    </Setting>
+    <Setting Name="MondayKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">monday</Value>
+    </Setting>
+    <Setting Name="TuesdayKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">tuesday</Value>
+    </Setting>
+    <Setting Name="WednesdayKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">wednesday</Value>
+    </Setting>
+    <Setting Name="ThursdayKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">thursday</Value>
+    </Setting>
+    <Setting Name="FridayKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">friday</Value>
+    </Setting>
+    <Setting Name="SaturdayKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">saturday</Value>
+    </Setting>
+    <Setting Name="WeekInvocationKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">week_invocation</Value>
+    </Setting>
+    <Setting Name="WeekDescriptionKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">week_description</Value>
+    </Setting>
+    <Setting Name="IssueMonthKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">issue_month</Value>
+    </Setting>
+    <Setting Name="IssueYearKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">issue_year</Value>
+    </Setting>
+    <Setting Name="WeekPicture" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">week_picture</Value>
+    </Setting>
+    <Setting Name="DayDateKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">date</Value>
+    </Setting>
+    <Setting Name="DayNameKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">name</Value>
+    </Setting>
+    <Setting Name="DayTitleKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">title</Value>
+    </Setting>
+    <Setting Name="DayDescriptionKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">description</Value>
+    </Setting>
+    <Setting Name="DayReadingRefKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">reading_ref</Value>
+    </Setting>
+    <Setting Name="DayReadingTextKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">reading_text</Value>
+    </Setting>
+    <Setting Name="DayContemplation1Key" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contemplation1</Value>
+    </Setting>
+    <Setting Name="DayContemplation2Key" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contemplation2</Value>
+    </Setting>
+    <Setting Name="DayContemplation3Key" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contemplation3</Value>
+    </Setting>
+    <Setting Name="DayContemplation4Key" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contemplation4</Value>
+    </Setting>
+    <Setting Name="DayContemplation5Key" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contemplation5</Value>
+    </Setting>
+    <Setting Name="DayContemplation6Key" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contemplation6</Value>
+    </Setting>
+    <Setting Name="DayPrayerKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">prayer</Value>
+    </Setting>
+    <Setting Name="CheckSpellingErrors" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MailAccount" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">lectio.divina.wydawca@gmail.com</Value>
+    </Setting>
+    <Setting Name="MailPwd" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Strachocin</Value>
+    </Setting>
+    <Setting Name="MailImapHost" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">imap.gmail.com</Value>
+    </Setting>
+    <Setting Name="MailImapPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">993</Value>
+    </Setting>
+    <Setting Name="MailImapUseSSL" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MailSmtpHost" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">smtp.gmail.com</Value>
+    </Setting>
+    <Setting Name="MaitSmtpPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">587</Value>
+    </Setting>
+    <Setting Name="MailSmtpUseSSL" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MailReadCount" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="MailImapInboxName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">INBOX</Value>
+    </Setting>
+    <Setting Name="MailLectioPublisher" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">jjprokopiuk@gmail.com</Value>
+    </Setting>
+    <Setting Name="OnJestUser" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">LectioDivinaWydawca</Value>
+    </Setting>
+    <Setting Name="OnJestPwd" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Strachocin</Value>
+    </Setting>
+    <Setting Name="OnJestPostTemplate" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">onjest post szablon.html</Value>
+    </Setting>
+    <Setting Name="OnJestAdminEmail" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">tomek.romanowski@gmail.com</Value>
+    </Setting>
+    <Setting Name="OnJestPictureNameTemplate" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">picyyMMdd.jp\g</Value>
+    </Setting>
+    <Setting Name="OnJestLectioNameTemplate" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">l\dyyMMdd.p\d\f</Value>
+    </Setting>
+    <Setting Name="OnJestPictureMaxWidth" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="OnJestPostOneDayKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">sunday</Value>
+    </Setting>
+    <Setting Name="OnJestPostCategory" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">slowo</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

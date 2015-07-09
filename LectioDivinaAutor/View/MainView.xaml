@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="LectioDivina.Autor.View.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ucontrols="clr-namespace:LectioDivina.Controls;assembly=LectioDivinaControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="670" d:DesignWidth="625"
+             DataContext="{Binding Main, Source={StaticResource Locator}}">
+    <DockPanel>
+        <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10" DockPanel.Dock="Top" >
+            <StackPanel Orientation="Vertical"  >
+                <StackPanel.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF7A7272" Offset="0"/>
+                        <GradientStop Color="#B2BFD5E6" Offset="1"/>
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock FontWeight="ExtraBold" FontSize="18" HorizontalAlignment="Center">Lectio Divina</TextBlock>
+                    <TextBlock FontSize="8" HorizontalAlignment="Center" Margin="5,10,0,0" Text="{Binding ExeVersion}"/>
+                </StackPanel>
+                <StackPanel Name="stpButtons" Orientation="Horizontal" Height="30" HorizontalAlignment="Right">
+                    <StackPanel Orientation="Horizontal" Margin="0,7,0,0" HorizontalAlignment="Left">
+                        <TextBlock Text="Ostatni zapis:" />
+                        <TextBlock Name="LastSaveTime" Text="{Binding LastSaveString}" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <Button Name="ClearButton" Style="{DynamicResource RoundedButton}" HorizontalAlignment="Left" Margin="2,0,20,0" Command="{Binding Clear}" Content="Wyczyść wszystko" ToolTip="Wyczyść wszystkie pola edycyjne"/>
+                    <Button Name="SaveButton" Style="{DynamicResource RoundedButton}" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding Save}" Content="Zapisz" ToolTip="Zapisz kopię roboczą"/>
+                    <Button Name="TryButton" Style="{DynamicResource RoundedButton}" HorizontalAlignment="Right" Margin="20,0,10,0"  Command="{Binding TryOut}" >
+                        <StackPanel Orientation="Horizontal" ToolTip="Pokaż próbną stronę w Wordzie">
+                            <Image Source="../Images/Word.png"/>
+                            <TextBlock Text="Wypróbuj" Margin="5,0,5,0" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="SendButton" Style="{DynamicResource RoundedButton}" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding Send}" Content="Wyślij" ToolTip="Wyślij do wydawcy"/>
+                    <Button Name="CloseButton" Style="{DynamicResource RoundedButton}" HorizontalAlignment="Right" Margin="20,0,10,0"  Command="{Binding CloseApp}" Content="Zamknij" ToolTip="Zamknij program"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <DockPanel Name="stpContent" DockPanel.Dock="Right" >
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Name="stpPages"  Background="#FFBFD5E6">
+                    <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10">
+                        <ucontrols:OneDayControl Margin="5,0,5,0" 
+                                                 Day="{Binding Day, Mode=TwoWay}"
+                                                 DayDescription="{Binding DayDescription, Mode=TwoWay}"
+                                                 DayTitle="{Binding Title, Mode=TwoWay}"
+                                                 ReadingRef="{Binding ReadingReference, Mode=TwoWay}"
+                                                 ReadingText="{Binding ReadingText, Mode=TwoWay}"
+                                                 Contemplation1="{Binding Contemplation1, Mode=TwoWay}"
+                                                 Contemplation2="{Binding Contemplation2, Mode=TwoWay}"
+                                                 Contemplation3="{Binding Contemplation3, Mode=TwoWay}"
+                                                 Contemplation4="{Binding Contemplation4, Mode=TwoWay}"
+                                                 Contemplation5="{Binding Contemplation5, Mode=TwoWay}"
+                                                 Contemplation6="{Binding Contemplation6, Mode=TwoWay}"
+                                                 Prayer="{Binding Prayer, Mode=TwoWay}"
+                                                 />
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+    </DockPanel>
+
+</UserControl>

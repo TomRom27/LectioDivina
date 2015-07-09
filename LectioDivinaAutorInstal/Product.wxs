@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="LectioDivinaAutor" Codepage="1250" Language="1033" Version="1.0.3.0" Manufacturer="TomekR" UpgradeCode="75c3ec36-10ee-483d-9db3-53dd1181a84e">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <!-- define, how to do the upgrade -->
+    <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
+    <Upgrade Id="8DCF1DEA-8275-48F3-81D6-E5AB43FCE57A">
+      <UpgradeVersion
+         Minimum="1.0.0.0" Maximum="99.0.0.0"
+         Property="PREVIOUSVERSIONSINSTALLED"
+         IncludeMinimum="yes" IncludeMaximum="no" />
+    </Upgrade>
+    <!-- the below executes the upgrade i.e. removex the old version etc. -->
+    <MajorUpgrade DowngradeErrorMessage="Nowsza wersja [ProductName] jest już zainstalowana." />
+    <Media Id="1" Cabinet="cab1.cab" EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="LectioDivinaAutorInstal" Level="1">
+      <ComponentRef Id="AppFiles"/>
+      <ComponentRef Id="AppShortcut"/>
+      <ComponentRef Id="AppShortcutDesktop"/>
+
+    </Feature>
+
+    <!-- 4.0 .Net needed -->
+    <PropertyRef Id="NETFRAMEWORK40FULL"/>
+    <Condition Message="[ProductName] wymaga .NET Framework 4.0. Proszę zainstalować .NET 4.0 lub nowszy i uruchomić instalator ponownie.">
+      <![CDATA[Installed OR NETFRAMEWORK40FULL]]>
+    </Condition>
+
+    <!-- UI simplified InstallDir (no license dialog) -->
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UI>
+      <UIRef Id="WixUI_InstallDir" />
+
+      <!-- Skip license dialog -->
+      <Publish Dialog="WelcomeDlg"
+               Control="Next"
+               Event="NewDialog"
+               Value="InstallDirDlg"
+               Order="2">1</Publish>
+      <Publish Dialog="InstallDirDlg"
+               Control="Back"
+               Event="NewDialog"
+               Value="WelcomeDlg"
+               Order="2">1</Publish>
+    </UI>
+    <Icon Id="appIcon.ico" SourceFile="LectioDivinaAutor.ico"/>
+    <!-- icon in Remove Programs menu -->
+    <Property Id="ARPPRODUCTICON" Value="appIcon.ico" />
+
+  </Product>
+  
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="LectioDivinaAutor" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder" >
+        <Directory Id="ApplicationProgramsFolder" Name="Lectio Divina Autor"/>
+        <Directory Id="DesktopFolder" Name="Desktop"/>
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <!-- TODO: Insert files, registry keys, and other resources here. -->
+    <!-- each item goes to different directory, that is why is separate component -->
+    <Component Id="AppFiles" Guid="{B3012FEE-B543-4983-A416-8C3856CB1A6E}" Directory="INSTALLFOLDER" >
+      <File Source="$(var.LectioDivinaAutor.TargetPath)" />
+      <File Source="$(var.LectioDivinaAutor.TargetPath).config" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\Lectio Divina szablon jeden dzień.doc" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\AE.Net.Mail.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\GalaSoft.MvvmLight.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\GalaSoft.MvvmLight.Extras.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\LectioDivinaControls.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\LectioDivinaModel.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\LectioDivinaService.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\Microsoft.mshtml.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\Microsoft.Practices.ServiceLocation.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\MvvmLight.Extensions.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\OnJestSlowoProxy.dll" />      
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\Smith.WPF.HtmlEditor.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\System.Windows.Interactivity.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\WordAutomation.dll" />
+      <!-- resource -->
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\pl-PL\Smith.WPF.HtmlEditor.resources.dll" />
+    </Component>
+    <Component Id="AppShortcut" Guid="{E6DA6B23-EBFE-4469-A4B9-E8A52C574B75}"  Directory="ApplicationProgramsFolder">
+      <Shortcut Id="StartMenuShortcut" Name="Lectio Divina Autor"
+          Target="[INSTALLFOLDER]$(var.LectioDivinaAutor.TargetFileName)"
+          WorkingDirectory="INSTALLFOLDER"
+          Icon="appIcon.ico"/>
+      <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall"/>
+      <RegistryValue Root="HKCU" Key="Software\Microsoft\LectioDivinaAutor" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+    </Component>
+    <Component Id="AppShortcutDesktop" Guid="{9F3B3AF4-AD07-4C54-A267-AC5E2D1B10A6}" Directory="DesktopFolder">
+      <Shortcut Id="DesktopShortcut" Name="Lectio Divina Autor"
+                Target="[INSTALLFOLDER]$(var.LectioDivinaAutor.TargetFileName)" WorkingDirectory="INSTALLFOLDER" Icon="appIcon.ico"/>
+      <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+      <RegistryValue Root="HKCU" Key="Software\LectioDivinaAutor" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+    </Component>
+  </Fragment>
+</Wix>

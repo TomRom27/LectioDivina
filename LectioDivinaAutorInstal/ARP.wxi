@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <Icon Id="icon.ico" SourceFile="LectioDivinaAutor.ico"/>
+  <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+</Include>

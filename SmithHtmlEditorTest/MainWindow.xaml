@@ -1,0 +1,25 @@
+﻿<Window x:Class="SmithHtmlEditorTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:editor="clr-namespace:Smith.WPF.HtmlEditor;assembly=Smith.WPF.SmithHtmlEditor"
+        xmlns:htmlEditor="clr-namespace:Smith.WPF.HtmlEditor;assembly=Smith.WPF.HtmlEditor"
+        xmlns:smithHtmlEditorTest="clr-namespace:SmithHtmlEditorTest"
+        Title="MainWindow" Height="450" Width="525">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button Content="Clear BindC" Width="80"  Click="Button_Click_1"/>
+            <Button Content="Show BindC" Width="80" Click="Button_Click_3"  />
+            <Button Content="Show Html" Width="80" Click="Button_Click_2"  />
+        </StackPanel>
+        <TextBox Name="TestTextBox" DockPanel.Dock="Bottom" Height="100" Background="Bisque">
+            <TextBox.Text>
+                <Binding Path="HtmlText" RelativeSource="{RelativeSource FindAncestor, AncestorType=smithHtmlEditorTest:MainWindow}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay"/>
+            </TextBox.Text>
+        </TextBox>
+        <htmlEditor:HtmlEditor Name="HtmlTextEditor" DockPanel.Dock="Right" Height="240" IsExpanded="False" Background="Azure" IsPasteFormatAllowed="False">
+            <htmlEditor:HtmlEditor.BindingContent>
+                <Binding Path="HtmlText" RelativeSource="{RelativeSource FindAncestor, AncestorType=smithHtmlEditorTest:MainWindow}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay"/>
+            </htmlEditor:HtmlEditor.BindingContent>
+        </htmlEditor:HtmlEditor>
+    </DockPanel>
+</Window>
