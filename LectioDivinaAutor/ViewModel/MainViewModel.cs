@@ -374,8 +374,8 @@ namespace LectioDivina.Autor.ViewModel
                         if (confirmed)
                         {
                             SaveContemplation();
-                            App.Current.Shutdown();
                         }
+                        App.Current.Shutdown();
                     });
             }
             else

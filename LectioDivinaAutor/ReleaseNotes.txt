@@ -1,8 +1,11 @@
-﻿1.0.1 2015-04-07
-- zamiana twardej spacji HTML na spację w Word (zmiana w LectioDivinaservice, LectioDivinaGenerator)
-- usunięcie znaczników paragrafu HTML (zmiana w LectioDivinaservice, LectioDivinaGenerator)
-1.0.2 2015-06-04
-- kompilacja z bibliotekami Word 2013 (usuwa to błąd braku zmiany kroju pisma)
+﻿1.0.4 2015-10-30
+- poprawiony błąd po pytaniu o zapis zmienionych rozważań (gdy odpowiedź była NIE, program się nie zamykał)
+- poprawiono błąd złej daty rozważania (miesiąc zamieniony z dniem)
 1.0.3 2015-07-02
 - drobne zmiany w WordAutomation
 - poprawiony projekt WiX (dodane OnJestProxy)
+1.0.2 2015-06-04
+- kompilacja z bibliotekami Word 2013 (usuwa to błąd braku zmiany kroju pisma)
+1.0.1 2015-04-07
+- zamiana twardej spacji HTML na spację w Word (zmiana w LectioDivinaservice, LectioDivinaGenerator)
+- usunięcie znaczników paragrafu HTML (zmiana w LectioDivinaservice, LectioDivinaGenerator)
