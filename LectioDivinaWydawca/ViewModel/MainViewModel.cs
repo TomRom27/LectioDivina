@@ -54,7 +54,6 @@ namespace LectioDivina.Wydawca.ViewModel
 
             CreateCommands();
             InitiateData();
-            Log("Start");
         }
 
         private void Log(string msg)

@@ -1,4 +1,6 @@
-﻿1.0.4 2015-07-08
+﻿1.0.5 2016-03-04
+- dodano usuwanie znacznika <BR> z tekstów 
+1.0.4 2015-07-08
 - usunięcie początkowej spacji z nazwy pliku Lectio, gdy nie ma wezwania tygodnia
 1.0.3 2015-04-07
 - usunięcie znaczników paragrafu HTML (zmiana w LectioDivinaservice, LectioDivinaGenerator)

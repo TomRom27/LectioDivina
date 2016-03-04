@@ -110,6 +110,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Lectio Divina szablon.docx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -161,6 +162,7 @@
     <Content Include="onjest post szablon.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="sample.png" />
     <Resource Include="ReleaseNotes.txt" />
     <SplashScreen Include="LectioSplashScreen.png" />
     <Resource Include="Images\LectioWydawca.png" />

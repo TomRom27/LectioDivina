@@ -27,7 +27,7 @@ namespace LectioDivina.Wydawca.View
             ViewModel.MainViewModel mvm = (DataContext as ViewModel.MainViewModel);
             if (mvm != null)
                 mvm.LoggingService = this;
-            Log("Start");
+            Log("Start " + ExeVersion);
         }
 
         private void AddToStatus(string msg)
@@ -48,6 +48,10 @@ namespace LectioDivina.Wydawca.View
                 AddToStatus(msg);
             else
                 this.Dispatcher.Invoke(new Action(() => { AddToStatus(msg); }));
+        }
+        public string ExeVersion
+        {
+            get { return System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString(3); }
         }
     }
 }

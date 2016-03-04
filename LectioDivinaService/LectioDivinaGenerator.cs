@@ -24,6 +24,7 @@ namespace LectioDivina.Service
         public string HtmlWhitespace = "&nbsp;";
         public string ParagraphTagOpenning = "<P>";
         public string ParagraphTagClosing = "</P>";
+        public string LineBreak = "<BR>";
 
         public void GenerateLectio(string templateFilename, string picturepath, string targetFilename, Model.LectioDivinaWeek lectioDivina, bool showWord)
         {
@@ -120,6 +121,7 @@ namespace LectioDivina.Service
             doc.ReplaceShortText(HtmlWhitespace, " ");
             doc.ReplaceShortText(ParagraphTagOpenning,"");
             doc.ReplaceShortText(ParagraphTagClosing, "");
+            doc.ReplaceShortText(LineBreak, "");
         }
 
         private void ReplaceTextForOneDay(string dayKey, Model.OneDayContemplation contemplation, WordDocument doc)
