@@ -119,5 +119,15 @@ namespace LectioDivina.Wydawca.ViewModel
                 RaisePropertyChanged(() => this.LectioTargetFolder);
             }
         }
+
+        public string LectioEbookSourceFolder
+        {
+            get { return titlepage.LectioEbookSourceFolder; }
+            set
+            {
+                titlepage.LectioEbookSourceFolder = value;
+                RaisePropertyChanged(() => this.LectioEbookSourceFolder);
+            }
+        }
     }
 }

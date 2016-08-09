@@ -229,6 +229,7 @@ namespace LectioDivina.Wydawca.ViewModel
         public RelayCommand GenerateLectioTarget { get; set; }
         public RelayCommand SelectTemplate { get; set; }
         public RelayCommand SelectTarget { get; set; }
+        public RelayCommand SelectEbookSource { get; set; }
         public RelayCommand SelectPicture { get; set; }
         public RelayCommand SelectShortContemplation { get; set; }
 
@@ -247,6 +248,7 @@ namespace LectioDivina.Wydawca.ViewModel
             GenerateLectioTarget = new RelayCommand(GenerateLectioTargetDoc);
             SelectTemplate = new RelayCommand(SelectLectioTemplate);
             SelectTarget = new RelayCommand(SelectLectioTarget);
+            SelectEbookSource = new RelayCommand(SelectLectioEbookSource);
             SelectPicture = new RelayCommand(SelectPictureFile);
             SelectShortContemplation = new RelayCommand(SelectShortContemplationFile);
         }
@@ -280,6 +282,13 @@ namespace LectioDivina.Wydawca.ViewModel
             string folder = dialogService.SelectFolder("Wybierz katalog, w którym umieszczony zostanie bie¿¹cy plik Lectio Divina", TitlePage.LectioTargetFolder);
             if (!String.IsNullOrEmpty(folder))
                 TitlePage.LectioTargetFolder = folder;
+        }
+
+        private void SelectLectioEbookSource()
+        {
+            string folder = dialogService.SelectFolder("Wybierz katalog zawierajacy pliki html do tworzenia ebooka Lectio Divina", TitlePage.LectioEbookSourceFolder);
+            if (!String.IsNullOrEmpty(folder))
+                TitlePage.LectioEbookSourceFolder = folder;
         }
 
         private void RefreshTargetFileProperty()
@@ -364,12 +373,27 @@ namespace LectioDivina.Wydawca.ViewModel
             if (TitlePage.IsPictureFromShortContemplation)
                 ExtractPictureFromShortContemplation();
 
+            try
+            {
+                if (!String.IsNullOrEmpty(TitlePage.LectioEbookSourceFolder))
+                {
+                    var ebookLectioGenerator = new OnJestEbookMaker(TitlePage.LectioEbookSourceFolder, lectioDivinaWeek);
+                    string ebookOutputName = TitlePage.LectioTargetFile.Replace(".docx", ".mobi");
+                    ebookLectioGenerator.Notification += Progress_Notification;
+                    ebookLectioGenerator.GenerateEbook(ebookOutputName);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log("B³¹d podczas generowania ebook-a\r\n" + exception.Message);
+            }
+            
             var lectioGenerator = new LectioDivinaGenerator();
-
             lectioGenerator.Notification += Progress_Notification;
             lectioGenerator.GenerateLectio(TitlePage.LectioTemplateFile, TitlePage.WeekPictureName, TitlePage.LectioTargetFile,
                 lectioDivinaWeek,
                 Properties.Settings.Default.ShowWord);
+                
 
         }
 
@@ -470,7 +494,7 @@ namespace LectioDivina.Wydawca.ViewModel
 
         private void SendLectio()
         {
-            var poster = new OnJestPostMaker();
+            var poster = new OnJestPostSender();
 
             poster.Notification += Progress_Notification;
 

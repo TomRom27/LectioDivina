@@ -27,6 +27,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Text="LECTIO DIVINA" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
@@ -53,41 +54,46 @@
                         <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectTarget}"/>
                         <TextBox Name="LectioTargetBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" Text="{Binding TitlePage.LectioTargetFolder,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </DockPanel>
+                    <TextBlock Grid.Column="0" Grid.Row="6" Text ="Katalog dla plików ebook" FontWeight="Bold" />
                     <DockPanel Grid.Column="1" Grid.Row="6" LastChildFill="True">
+                        <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectEbookSource}"/>
+                        <TextBox Name="LectioEbookSourceBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" Text="{Binding TitlePage.LectioEbookSourceFolder,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    </DockPanel>
+                    <DockPanel Grid.Column="1" Grid.Row="7" LastChildFill="True">
                         <Button Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" ToolTip="Otwórz plik Lectio w Wordzie" Command="{Binding OpenLectioTarget}">
                             <Image Source="../Images/Word.png"/>
                         </Button>
                         <TextBlock Margin="5,0,0,0" Text="{Binding TitlePage.LectioTargetFile}"/>
                     </DockPanel>
-                    <StackPanel Grid.ColumnSpan="2" Grid.Column="0"  Grid.Row="7" Orientation="Horizontal"  >
+                    <StackPanel Grid.ColumnSpan="2" Grid.Column="0"  Grid.Row="8" Orientation="Horizontal"  >
                         <RadioButton Content="Brać obrazek bezpośrednio z pliku" Margin="3,0,0,0" IsChecked="{Binding TitlePage.IsPictureFromOwnFile}"/>
                         <RadioButton Content="Brać obrazek z Rozważań krótkich" Margin="20,0,0,0" IsChecked="{Binding TitlePage.IsPictureFromShortContemplation}"/>
                     </StackPanel>
-                    <TextBlock Grid.Column="0" Grid.Row="8" Text ="Plik Rozważań krótkich" FontWeight="Bold" />
-                    <DockPanel Grid.Column="1" Grid.Row="8" LastChildFill="True">
+                    <TextBlock Grid.Column="0" Grid.Row="9" Text ="Plik Rozważań krótkich" FontWeight="Bold" />
+                    <DockPanel Grid.Column="1" Grid.Row="9" LastChildFill="True">
                         <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectShortContemplation}" IsEnabled="{Binding TitlePage.IsPictureFromShortContemplation}"/>
                         <TextBox Name="ShortContemplationBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" IsEnabled="{Binding TitlePage.IsPictureFromShortContemplation}" Text="{Binding TitlePage.WeekShortContemplationName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     </DockPanel>
-                    <TextBlock Grid.Column="0" Grid.Row="9" Text ="Plik obrazka" FontWeight="Bold" />
-                    <DockPanel Grid.Column="1" Grid.Row="9" LastChildFill="True">
+                    <TextBlock Grid.Column="0" Grid.Row="10" Text ="Plik obrazka" FontWeight="Bold" />
+                    <DockPanel Grid.Column="1" Grid.Row="10" LastChildFill="True">
                         <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectPicture}" IsEnabled="{Binding TitlePage.IsPictureFromOwnFile}"/>
                         <TextBox Name="WeekPictureBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" IsEnabled="{Binding TitlePage.IsPictureFromOwnFile}" Text="{Binding TitlePage.WeekPictureName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     </DockPanel>
-                    <StackPanel Grid.ColumnSpan="2" Grid.Column="0"  Grid.Row="10" Orientation="Horizontal" Height="30" HorizontalAlignment="Center">
+                    <StackPanel Grid.ColumnSpan="2" Grid.Column="0"  Grid.Row="11" Orientation="Horizontal" Height="30" HorizontalAlignment="Center">
                         <Button Name="ClearButton" HorizontalAlignment="Left" Margin="0,0,0,0" Command="{Binding Clear}" >Wyczyść wszystko</Button>
                         <Button Name="ReceiveButton" HorizontalAlignment="Left" Margin="50,0,0,0" Command="{Binding Receive}">Pobierz</Button>
                         <Button Name="SaveButton" HorizontalAlignment="Left" Margin="10,0,00,0" Command="{Binding Save}">Zapisz</Button>
                         <Button Name="CreateTargetButton" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding GenerateLectioTarget}">
-                            <StackPanel Orientation="Horizontal">                                
+                            <StackPanel Orientation="Horizontal">
                                 <Image Source="../Images/Word.png"/>
                                 <TextBlock Text="Utwórz" Margin="5,0,5,0" VerticalAlignment="Center"></TextBlock>
                             </StackPanel>
-                            </Button>
+                        </Button>
                         <Button Name="SendButton" HorizontalAlignment="Left" Margin="50,0,0,0" Command="{Binding Send}">Wyślij</Button>
                         <Button Name="CloseButton" HorizontalAlignment="Right" Margin="50,0,0,0"  Command="{Binding CloseApp}" >Zamknij</Button>
                     </StackPanel>
-                    <ScrollViewer Name="LogBoxScroll" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="11" VerticalScrollBarVisibility="Auto" Margin="0,5,0,0" >
-                        <TextBox Name="LogBox" IsEnabled="False" MinHeight="280"/>
+                    <ScrollViewer Name="LogBoxScroll" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="12" VerticalScrollBarVisibility="Auto" Margin="0,5,0,0" >
+                        <TextBox Name="LogBox" IsEnabled="False" MinHeight="210"/>
                     </ScrollViewer>
                 </Grid>
 
