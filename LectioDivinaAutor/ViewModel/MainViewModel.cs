@@ -27,12 +27,13 @@ namespace LectioDivina.Autor.ViewModel
         private OneDayContemplation contemplation;
         private IContemplationDataService dataService;
         private IDialogService dialogService;
+        private ICredentialsService credentialsService;
         private bool isDirty;
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel(IContemplationDataService dataService, IDialogService dialogService)
+        public MainViewModel(IContemplationDataService dataService, IDialogService dialogService, ICredentialsService credentialsService)
         {
             ////if (IsInDesignMode)
             ////{
@@ -45,6 +46,7 @@ namespace LectioDivina.Autor.ViewModel
             //
             this.dataService = dataService;
             this.dialogService = dialogService;
+            this.credentialsService = credentialsService;
 
             CreateCommands();
             InitiateData();
@@ -421,7 +423,9 @@ namespace LectioDivina.Autor.ViewModel
             {
                 dialogService.SetBusy();
 
-                LectioDivina.Service.MailTransport transport = new MailTransport();
+                Credentials emailPwd = credentialsService.Load();
+                emailPwd = CredentialsValidator.UpdateEmailPwdIfMissing(emailPwd, credentialsService);
+                LectioDivina.Service.MailTransport transport = new MailTransport(emailPwd);
                 transport.SendToPublisher(contemplation);
 
                 dialogService.ShowMessage("Wysy³anie zakoñczone", "Informacja");
