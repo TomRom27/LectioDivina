@@ -5,10 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Drawing;
+
 
 
 using LectioDivina.Model;
 using WordAutomation;
+using System.Windows;
 
 namespace LectioDivina.Service
 {
@@ -18,32 +22,46 @@ namespace LectioDivina.Service
         private LectioDivina.OnJestSlowoProxy.OnJestSlowoProxy onJestProxy;
         private string tempPath;
         private OnJestPostMaker htmlContentCreator;
+        private Credentials credentials;
+        private MailTransport mailer;
 
         public event EventHandler<NotificationEventArgs> Notification;
-
-        public OnJestPostSender()
+        
+        public OnJestPostSender(ICredentialsService credentialService)
         {
             onJestProxy = new OnJestSlowoProxy.OnJestSlowoProxy();
 
             tempPath = System.IO.Path.GetTempPath();
 
+            credentials = credentialService.Load();
+            credentials = CredentialsValidator.UpdateEmailPwdIfMissing(credentials, credentialService);
+            credentials = CredentialsValidator.UpdateUploadPwdIfMissing(credentials, credentialService);
+            mailer = new MailTransport(credentials);
+
             htmlContentCreator = new OnJestPostMaker(Properties.Settings.Default.OnJestPostOneDayKey, Properties.Settings.Default.OnJestPostTemplate);
         }
 
-        public void SendLectio(string picturepath, string lectioWordFile, LectioDivinaWeek lectioWeek)
+
+        public void SendLectio(LectioDivinaWeek lectioWeek)
         {
+            string picturepath = lectioWeek.Title.WeekPictureName;
+            string lectioWordFile = lectioWeek.Title.LectioTargetFile;
+            string ebookFile = OnJestEbookMaker.GetEbookName(lectioWeek);
+
+            
+            
             if (!File.Exists(lectioWordFile))
                 throw new Exception("Nie znaleziono pliku Lectio Divina: " + lectioWordFile);
 
             if (!File.Exists(picturepath))
                 throw new Exception("Nie znaleziono pliku z obrazkiem");
-
-            string postTemplate = Properties.Settings.Default.OnJestPostTemplate;
-            if (!File.Exists(postTemplate))
-                throw new Exception("Nie znaleziono pliku z szablonem postu: " + postTemplate);
+               
 
             OnNotification("Wysyłanie rozpoczęte.");
 
+            SendEbookFile(ebookFile, lectioWeek);
+
+            
             SendPicture(picturepath, lectioWeek);
 
             SendLectioFile(lectioWordFile, lectioWeek);
@@ -63,10 +81,13 @@ namespace LectioDivina.Service
 
         private void SendOnJestAdminInfo(LectioDivinaWeek lectioWeek)
         {
-            OnNotification("Wysyłam mail do admina OnJest");
-            var mailer = new MailTransport();
+            OnNotification("Wysyłam mail do admina OnJest");            
 
-            mailer.SendMail("Lectio Divina " + Localization.Date2PlStr(lectioWeek.Title.SundayDate), "wysłane", Properties.Settings.Default.OnJestAdminEmail, "OnJest Admin");
+            string subject = "Lectio Divina " + Localization.Date2PlStr(lectioWeek.Title.SundayDate);
+            string body = "wysłane";
+            string toEmail = Properties.Settings.Default.OnJestAdminEmail;
+            string toName = "OnJest Admin";
+            mailer.SendMail(subject, body, toEmail, toName);
         }
 
         #region sending posts
@@ -77,10 +98,20 @@ namespace LectioDivina.Service
 
             string postText = htmlContentCreator.CreateContentFromTemplate(oneDay);
 
-            onJestProxy.SendPost(Properties.Settings.Default.OnJestUser, Properties.Settings.Default.OnJestPwd, oneDay.Title, 
+            onJestProxy.SendPost(Properties.Settings.Default.OnJestUser, credentials.uploadPwd, oneDay.Title, 
                 Properties.Settings.Default.OnJestPostCategory, oneDay.Day, postText);
         }
         #endregion
+
+        private void SendEbookFile(string ebookFile, LectioDivinaWeek lectioWeek)
+        {
+            string fileName = CreateName(Properties.Settings.Default.OnJestEbookLectioNameTemplate, lectioWeek);
+            OnNotification("Wysyłam ebook-a Lectio Divina jako " + fileName);
+            string newName = System.IO.Path.Combine(tempPath, fileName);
+            System.IO.File.Copy(ebookFile, newName, true);
+
+            onJestProxy.UploadFile(Properties.Settings.Default.OnJestUser, credentials.uploadPwd, newName);
+        }
 
         private void SendLectioFile(string lectioWordFile, LectioDivinaWeek lectioWeek)
         {
@@ -94,7 +125,7 @@ namespace LectioDivina.Service
             word.SaveAsDifferentFormat(newName, WordFormats.Pdf);
             word.Close();
 
-            onJestProxy.UploadFile(Properties.Settings.Default.OnJestUser, Properties.Settings.Default.OnJestPwd, newName);
+            onJestProxy.UploadFile(Properties.Settings.Default.OnJestUser, credentials.uploadPwd, newName);
         }
 
         private void SendPicture(string picturepath, LectioDivinaWeek lectioWeek)
@@ -108,7 +139,7 @@ namespace LectioDivina.Service
                 newName, Properties.Settings.Default.OnJestPictureMaxWidth, null);
 
             // send
-            onJestProxy.UploadFile(Properties.Settings.Default.OnJestUser, Properties.Settings.Default.OnJestPwd, newName);
+            onJestProxy.UploadFile(Properties.Settings.Default.OnJestUser, credentials.uploadPwd, newName);
         }
 
         private string CreateName(string nameTemplate, LectioDivinaWeek lectioWeek)

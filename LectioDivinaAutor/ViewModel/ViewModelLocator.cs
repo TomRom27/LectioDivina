@@ -19,7 +19,7 @@ using GalaSoft.MvvmLight.Views;
 using MvvmLight.Extensions.Wpf;
 
 using Microsoft.Practices.ServiceLocation;
-
+using LectioDivina.Service;
 
 namespace LectioDivina.Autor.ViewModel
 {
@@ -50,6 +50,7 @@ namespace LectioDivina.Autor.ViewModel
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<MvvmLight.Extensions.IDialogService, MvvmLight.Extensions.Wpf.DialogService>();
+            SimpleIoc.Default.Register<ICredentialsService, CredentialsService>();
         }
 
         public MainViewModel Main

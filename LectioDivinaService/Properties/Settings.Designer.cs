@@ -268,15 +268,6 @@ namespace LectioDivina.Service.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Strachocin")]
-        public string MailPwd {
-            get {
-                return ((string)(this["MailPwd"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("imap.gmail.com")]
         public string MailImapHost {
             get {
@@ -367,15 +358,6 @@ namespace LectioDivina.Service.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Strachocin")]
-        public string OnJestPwd {
-            get {
-                return ((string)(this["OnJestPwd"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("onjest post szablon.html")]
         public string OnJestPostTemplate {
             get {
@@ -409,7 +391,18 @@ namespace LectioDivina.Service.Properties {
                 return ((string)(this["OnJestLectioNameTemplate"]));
             }
         }
-        
+
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ebyyMMdd.\\mobi")]
+        public string OnJestEbookLectioNameTemplate
+        {
+            get
+            {
+                return ((string)(this["OnJestEbookLectioNameTemplate"]));
+            }
+        }
+
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1000")]

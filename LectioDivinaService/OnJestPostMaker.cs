@@ -11,11 +11,15 @@ namespace LectioDivina.Service
     {
         private HtmlText htmlText;
         string dayKey;
-        string htmlTemplate;
+        string postTemplate;
 
-        public OnJestPostMaker(string dayKey, string htmlTemplate) {
+        public OnJestPostMaker(string dayKey, string postTemplate) {
+
+            if (!File.Exists(postTemplate))
+                throw new Exception("Nie znaleziono pliku z szablonem postu: " + postTemplate);
+
             this.dayKey = dayKey;
-            this.htmlTemplate = htmlTemplate;
+            this.postTemplate = postTemplate;
             htmlText = new HtmlText();
         }
 
@@ -27,7 +31,7 @@ namespace LectioDivina.Service
         private string CreateText(OneDayContemplation contemplation)
         {
 
-            string postText = ReadTemplate(htmlTemplate);
+            string postText = ReadTemplate(postTemplate);
 
             // [sunday_date], 
             HtmlReplaceAllText(ref postText, MakeKey(dayKey, Properties.Settings.Default.DayDateKey), Localization.Date2PlStr(contemplation.Day));

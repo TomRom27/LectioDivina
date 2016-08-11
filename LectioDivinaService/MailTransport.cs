@@ -15,13 +15,19 @@ namespace LectioDivina.Service
     public class MailTransport
     {
         public event EventHandler<NotificationEventArgs> Notification;
+        private Credentials credentials;
+
+        public MailTransport(Credentials credentials)
+        {
+            this.credentials = credentials;
+        }
 
         public void SendMail(string subject, string body, string toEmail, string toName)
         {
 
             var fromAddress = new MailAddress(Properties.Settings.Default.MailAccount, "Autor");
             var toAddress = new MailAddress(toEmail, toName);
-            string fromPassword = Properties.Settings.Default.MailPwd;
+            string fromPassword = credentials.mailPwd;
 
             var smtp = new SmtpClient
             {
@@ -64,7 +70,7 @@ namespace LectioDivina.Service
             ImapClient ic = new ImapClient(
                 Properties.Settings.Default.MailImapHost, //"imap.gmail.com", 
                 Properties.Settings.Default.MailAccount, //"name@gmail.com", 
-                Properties.Settings.Default.MailPwd, // "pass",
+                credentials.mailPwd, // "pass",
                 AuthMethods.Login,
                 Properties.Settings.Default.MailImapPort, // 993, 
                 Properties.Settings.Default.MailImapUseSSL); //  true);

@@ -36,9 +36,10 @@ namespace LectioDivina.Wydawca.ViewModel
         private LectioDivinaWeek lectioDivinaWeek;
         private ILectioDataService dataService;
         private IDialogService dialogService;
+        private ICredentialsService credentialsService;
         private bool isDirty;
 
-        public MainViewModel(ILectioDataService dataService, IDialogService dialogService)
+        public MainViewModel(ILectioDataService dataService, IDialogService dialogService, ICredentialsService credentialsService)
         {
             ////if (IsInDesignMode)
             ////{
@@ -50,6 +51,7 @@ namespace LectioDivina.Wydawca.ViewModel
             ////}
             this.dataService = dataService;
             this.dialogService = dialogService;
+            this.credentialsService = credentialsService;
             //this.loggingService = loggingService;
 
             CreateCommands();
@@ -378,7 +380,7 @@ namespace LectioDivina.Wydawca.ViewModel
                 if (!String.IsNullOrEmpty(TitlePage.LectioEbookSourceFolder))
                 {
                     var ebookLectioGenerator = new OnJestEbookMaker(TitlePage.LectioEbookSourceFolder, lectioDivinaWeek);
-                    string ebookOutputName = TitlePage.LectioTargetFile.Replace(".docx", ".mobi");
+                    string ebookOutputName = OnJestEbookMaker.GetEbookName(lectioDivinaWeek);
                     ebookLectioGenerator.Notification += Progress_Notification;
                     ebookLectioGenerator.GenerateEbook(ebookOutputName);
                 }
@@ -494,12 +496,11 @@ namespace LectioDivina.Wydawca.ViewModel
 
         private void SendLectio()
         {
-            var poster = new OnJestPostSender();
+            var poster = new OnJestPostSender(credentialsService);
 
             poster.Notification += Progress_Notification;
 
-            poster.SendLectio(lectioDivinaWeek.Title.WeekPictureName, lectioDivinaWeek.Title.LectioTargetFile,
-                                lectioDivinaWeek);
+            poster.SendLectio(lectioDivinaWeek);
         }
 
         private void ReceiveLectiosFromServer()
@@ -509,7 +510,9 @@ namespace LectioDivina.Wydawca.ViewModel
                 .StartNew(() =>
                 {
                     Log("Odbieram  z serwera Lectio od autorów");
-                    MailTransport transport = new MailTransport();
+                    Credentials emailPwd = credentialsService.Load();
+                    emailPwd = CredentialsValidator.UpdateEmailPwdIfMissing(emailPwd, credentialsService);
+                    MailTransport transport = new MailTransport(emailPwd);
                     transport.Notification += Progress_Notification;
                     List<OneDayContemplation> contemplations = transport.RetrieveContemplations();
                     foreach (var contemplation in contemplations)

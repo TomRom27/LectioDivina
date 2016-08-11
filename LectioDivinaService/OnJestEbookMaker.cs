@@ -126,5 +126,10 @@ namespace LectioDivina.Service
                 Notification.BeginInvoke(this, args, null, null);
             }
         }
+
+        public static string GetEbookName(LectioDivinaWeek lectioDivine)
+        {
+            return lectioDivine.Title.LectioTargetFile.Replace(".docx", ".mobi");
+        }
     }
 }
