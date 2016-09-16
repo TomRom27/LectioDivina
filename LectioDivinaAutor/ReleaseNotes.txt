@@ -1,5 +1,6 @@
 ﻿1.0.5 2016-08-xx
 - SmithHtmlEditor używa MSHTML z Windows\System32 (a nie GAC) - kompatybilność z Windows 10
+- mail sender i serwer smtp można konfigurować poprzez userSettings
 1.0.4 2015-10-30
 - poprawiony błąd po pytaniu o zapis zmienionych rozważań (gdy odpowiedź była NIE, program się nie zamykał)
 - poprawiono błąd złej daty rozważania (miesiąc zamieniony z dniem)

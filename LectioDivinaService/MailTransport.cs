@@ -19,9 +19,9 @@ namespace LectioDivina.Service
         public void SendMail(string subject, string body, string toEmail, string toName)
         {
 
-            var fromAddress = new MailAddress(Properties.Settings.Default.MailAccount, "Autor");
+            var fromAddress = new MailAddress(Properties.Settings.Default.SenderMail, "Autor");
             var toAddress = new MailAddress(toEmail, toName);
-            string fromPassword = Properties.Settings.Default.MailPwd;
+            string fromPassword = Properties.Settings.Default.SenderPwd;
 
             var smtp = new SmtpClient
             {

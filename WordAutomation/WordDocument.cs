@@ -54,7 +54,8 @@ namespace WordAutomation
             doc = word.Documents.Open(ref filename, ref missing, ref readOnly, ref missing, ref missing, ref missing,
                                     ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisibleObj,
                                     ref missing, ref missing, ref missing, ref missing);
-            MakeDocEditable();
+            if (isVisible)
+                MakeDocEditable();
         }
 
         private void MakeDocEditable()
@@ -164,17 +165,17 @@ namespace WordAutomation
 
         public void SetItalicForHtmTag(string tagName)
         {
-            SetFontWithinHtmlTag(tagName, delegate(MSWord.Font font) { font.Italic = 1; });
+            SetFontWithinHtmlTag(tagName, delegate (MSWord.Font font) { font.Italic = 1; });
         }
 
         public void SetBoldForHtmTag(string tagName)
         {
-            SetFontWithinHtmlTag(tagName, delegate(MSWord.Font font) { font.Bold = 1; });
+            SetFontWithinHtmlTag(tagName, delegate (MSWord.Font font) { font.Bold = 1; });
         }
 
         public void SetUnderlineForHtmTag(string tagName)
         {
-            SetFontWithinHtmlTag(tagName, delegate(MSWord.Font font) { font.Underline = MSWord.WdUnderline.wdUnderlineSingle; });
+            SetFontWithinHtmlTag(tagName, delegate (MSWord.Font font) { font.Underline = MSWord.WdUnderline.wdUnderlineSingle; });
         }
         public void SaveAs(string newName)
         {
@@ -428,7 +429,7 @@ namespace WordAutomation
         {
             // Word uses single \r as a paragraph end, so we must replace Windows style end lines with Word style
 
-            while ((replacingText!= null) && (replacingText.IndexOf(WindowsEndLine) >= 0))
+            while ((replacingText != null) && (replacingText.IndexOf(WindowsEndLine) >= 0))
                 replacingText = replacingText.Replace(WindowsEndLine, WordEndLine);
 
             return replacingText;
