@@ -1,6 +1,6 @@
 ﻿zamykanie Worda po nieudanych próbach!!!
 
-1.0.6 2016-08-xx
+1.0.6 2016-09-24
 - SmithHtmlEditor używa MSHTML z Windows\System32 (a nie GAC) - kompatybilność z Windows 10
 1.0.5 2016-03-04
 - dodano usuwanie znacznika <BR> z tekstów 

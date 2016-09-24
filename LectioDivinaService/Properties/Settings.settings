@@ -96,13 +96,13 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="MailSmtpHost" Type="System.String" Scope="User">
-      <Value Profile="(Default)">smtp.gmail.com</Value>
+      <Value Profile="(Default)">smtp.poczta.onet.pl</Value>
     </Setting>
     <Setting Name="MaitSmtpPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">587</Value>
     </Setting>
     <Setting Name="MailSmtpUseSSL" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="MailReadCount" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">50</Value>
@@ -141,10 +141,10 @@
       <Value Profile="(Default)">slowo</Value>
     </Setting>
     <Setting Name="SenderMail" Type="System.String" Scope="User">
-      <Value Profile="(Default)">lectio.divina.wydawca@gmail.com</Value>
+      <Value Profile="(Default)">lectio.divina.autor@onet.pl</Value>
     </Setting>
     <Setting Name="SenderPwd" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Strachocin</Value>
+      <Value Profile="(Default)">Strachocin01</Value>
     </Setting>
   </Settings>
 </SettingsFile>
