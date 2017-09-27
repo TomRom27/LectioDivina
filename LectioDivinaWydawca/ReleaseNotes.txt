@@ -1,5 +1,6 @@
 ﻿zamykanie Worda po nieudanych próbach!!!
-
+1.0.7 2017-10-02
+- dodano IDocMaker (i zmiany w przestrzeniach nazw)
 1.0.6 2016-08-xx
 - SmithHtmlEditor używa MSHTML z Windows\System32 (a nie GAC) - kompatybilność z Windows 10
 1.0.5 2016-03-04

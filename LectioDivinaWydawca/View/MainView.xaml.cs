@@ -51,7 +51,7 @@ namespace LectioDivina.Wydawca.View
         }
         public string ExeVersion
         {
-            get { return System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString(3); }
+            get { return System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString(4); }
         }
     }
 }

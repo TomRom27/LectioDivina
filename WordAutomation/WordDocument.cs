@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MSWord = Microsoft.Office.Interop.Word;
 
-namespace WordAutomation
+namespace DocMaker.WordAutomation
 {
     public enum WordFormats
     {
@@ -24,7 +24,7 @@ namespace WordAutomation
         Gif
     };
 
-    public class WordDocument : IDisposable
+    public class WordDocument : IDocMaker
     {
         const string WindowsEndLine = "\n";
         const string WordEndLine = "\r";

@@ -11,7 +11,7 @@ using LectioDivina.Service;
 using LectioDivinaWydawca;
 
 using MvvmLight.Extensions;
-using WordAutomation;
+using DocMaker.WordAutomation;
 
 namespace LectioDivina.Wydawca.ViewModel
 {

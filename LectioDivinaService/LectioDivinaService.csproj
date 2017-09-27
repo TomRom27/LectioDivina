@@ -58,6 +58,10 @@
       <Project>{68e9cf8c-ab54-4cc7-a34f-c7f469e4efe0}</Project>
       <Name>AE.Net.Mail</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DocMaker\DocMaker.csproj">
+      <Project>{728c821e-d749-4756-a51d-aa9ed88b79c4}</Project>
+      <Name>DocMaker</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LectioDivinaModel\LectioDivinaModel.csproj">
       <Project>{c3960368-d106-494b-ae0c-348f56efae3c}</Project>
       <Name>LectioDivinaModel</Name>

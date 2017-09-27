@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 
 using LectioDivina.Model;
-using WordAutomation;
+using DocMaker.WordAutomation;
 
 namespace LectioDivina.Service
 {

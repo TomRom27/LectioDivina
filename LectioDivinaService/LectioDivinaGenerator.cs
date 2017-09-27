@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
@@ -8,7 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using WordAutomation;
+using DocMaker;
+using DocMaker.WordAutomation;
 
 namespace LectioDivina.Service
 {
@@ -34,7 +36,7 @@ namespace LectioDivina.Service
             if (!File.Exists(picturepath))
                 throw new Exception("Nie znaleziono pliku z obrazkiem");
 
-            using (WordDocument doc = new WordDocument())
+            using (IDocMaker doc = ResolveDocMaker())
             {
                 OnNotification("Otwieram szablon i zapisuję pod nową nazwą");
                 doc.Open(templateFilename, showWord);
@@ -81,13 +83,10 @@ namespace LectioDivina.Service
             }
         }
 
-        private void ReplaceTextForTitle(Model.TitlePage titlePage, string picturepath, WordDocument doc)
+        private IDocMaker ResolveDocMaker()
         {
-            doc.ReplaceText(MakeKey(Properties.Settings.Default.WeekInvocationKey), titlePage.WeekInvocation);
-            doc.ReplaceText(MakeKey(Properties.Settings.Default.WeekDescriptionKey), titlePage.WeekDescription);
-            doc.ReplaceText(MakeKey(Properties.Settings.Default.IssueMonthKey), Localization.Date2PlStr(titlePage.SundayDate));
-            doc.ReplaceText(MakeKey(Properties.Settings.Default.IssueYearKey), (titlePage.SundayDate.Year.ToString()));
-            doc.ReplaceTextWithImageFromFile(MakeKey(Properties.Settings.Default.WeekPicture), picturepath);
+            var o = new WordDocument();
+            return o;
         }
 
         public void GenerateOneDayLectio(string templateFilename, string dayKey, Model.OneDayContemplation contemplation, Action afterCallback)
@@ -95,7 +94,7 @@ namespace LectioDivina.Service
             if (!File.Exists(templateFilename))
                 throw new Exception("Nie znaleziono szablonu: " + templateFilename);
 
-            using (WordDocument doc = new WordDocument())
+            using (IDocMaker doc = ResolveDocMaker())
             {
                 doc.Open(templateFilename, true);
 
@@ -111,7 +110,16 @@ namespace LectioDivina.Service
             }
         }
 
-        private void ApplyFormatting(WordDocument doc)
+        private void ReplaceTextForTitle(Model.TitlePage titlePage, string picturepath, IDocMaker doc)
+        {
+            doc.ReplaceText(MakeKey(Properties.Settings.Default.WeekInvocationKey), titlePage.WeekInvocation);
+            doc.ReplaceText(MakeKey(Properties.Settings.Default.WeekDescriptionKey), titlePage.WeekDescription);
+            doc.ReplaceText(MakeKey(Properties.Settings.Default.IssueMonthKey), Localization.Date2PlStr(titlePage.SundayDate));
+            doc.ReplaceText(MakeKey(Properties.Settings.Default.IssueYearKey), (titlePage.SundayDate.Year.ToString()));
+            doc.ReplaceTextWithImageFromFile(MakeKey(Properties.Settings.Default.WeekPicture), picturepath);
+        }
+
+        private void ApplyFormatting(IDocMaker doc)
         {
             doc.SetBoldForHtmTag(BoldTag1);
             doc.SetBoldForHtmTag(BoldTag2);
@@ -124,7 +132,7 @@ namespace LectioDivina.Service
             doc.ReplaceShortText(LineBreak, "");
         }
 
-        private void ReplaceTextForOneDay(string dayKey, Model.OneDayContemplation contemplation, WordDocument doc)
+        private void ReplaceTextForOneDay(string dayKey, Model.OneDayContemplation contemplation, IDocMaker doc)
         {
             string key;
             // [sunday_date], 
@@ -189,7 +197,7 @@ namespace LectioDivina.Service
         }
 
 
-        private void NotifyOnSpellingErrors(WordDocument doc)
+        private void NotifyOnSpellingErrors(IDocMaker doc)
         {
             List<string> spellingErrors;
 
