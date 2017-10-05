@@ -33,7 +33,7 @@ namespace LectioDivina.Service
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
             };
             using (
-                var message = new System.Net.Mail.MailMessage(fromAddress, toAddress) {Subject = subject, Body = body})
+                var message = new System.Net.Mail.MailMessage(fromAddress, toAddress) { Subject = subject, Body = body })
             {
                 smtp.Send(message);
             }
@@ -44,7 +44,7 @@ namespace LectioDivina.Service
 
         public void SendToPublisher(OneDayContemplation contemplation)
         {
-            string subject = LectioDivinaSubjectPrefix + " " + contemplation.Day.DayOfWeek.ToString();
+            string subject = LectioDivinaSubjectPrefix + " " + contemplation.Day.DayOfWeek.ToString() + " " + contemplation.Day.ToShortDateString();
             string body = SerializationHelper.Serialize(contemplation);
             SendMail(subject, body, Properties.Settings.Default.MailAccount, "Wydawca");
 
@@ -57,7 +57,8 @@ namespace LectioDivina.Service
             }
         }
 
-        public List<OneDayContemplation> RetrieveContemplations()
+
+        public List<OneDayContemplation> RetrieveContemplations(DateTime? dayStart, DateTime? dayEnd)
         {
             OnNotification("Łączę się z serwerem");
             System.Diagnostics.Trace.WriteLine("Connecting to mail box");
@@ -85,9 +86,13 @@ namespace LectioDivina.Service
                 OneDayContemplation contemplation = ConvertMessageToObject(message);
                 if (contemplation != null)
                 {
-                    OnNotification("Znalazłem " + contemplation.Day.ToString("yyyy.MM.dd"));
-                    list.Add((contemplation));
-                    ic.DeleteMessage(message);
+                    if ((!dayStart.HasValue || (dayStart.Value <= contemplation.Day)) &&
+                        (!dayEnd.HasValue || (contemplation.Day <= dayEnd)))
+                    {
+                        OnNotification("Znalazłem " + contemplation.Day.ToString("yyyy.MM.dd"));
+                        list.Add((contemplation));
+                        ic.DeleteMessage(message);
+                    }
                 }
             }
 
@@ -153,5 +158,6 @@ namespace LectioDivina.Service
                 Notification.BeginInvoke(this, args, null, null);
             }
         }
+
     }
 }

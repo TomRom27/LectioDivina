@@ -487,7 +487,18 @@ namespace LectioDivina.Wydawca.ViewModel
                     Log("Odbieram  z serwera Lectio od autorów");
                     MailTransport transport = new MailTransport();
                     transport.Notification += Progress_Notification;
-                    List<OneDayContemplation> contemplations = transport.RetrieveContemplations();
+                    List<OneDayContemplation> contemplations = null;
+
+                    if (Properties.Settings.Default.LectiosFromWeekOnly)
+                    {
+                        // if the mode is Week, that it does NOT matter dates of lectios, so we ignore the dates and we take all
+                        contemplations = transport.RetrieveContemplations(null, null);
+                    }
+                    else
+                    {
+                        // if the mode is not Week, then we get lectios for given week only
+                        contemplations = transport.RetrieveContemplations(TitlePage.SundayDate, TitlePage.SundayDate.AddDays(7));
+                    }
                     foreach (var contemplation in contemplations)
                     {
                         AddContemplationToWeek(contemplation);
