@@ -304,7 +304,7 @@ namespace LectioDivina.Service.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("smtp.gmail.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("smtp.poczta.onet.pl")]
         public string MailSmtpHost {
             get {
                 return ((string)(this["MailSmtpHost"]));
@@ -328,7 +328,7 @@ namespace LectioDivina.Service.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool MailSmtpUseSSL {
             get {
                 return ((bool)(this["MailSmtpUseSSL"]));
@@ -448,7 +448,7 @@ namespace LectioDivina.Service.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("lectio.divina.wydawca@gmail.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("lectio.divina.autor@onet.pl")]
         public string SenderMail {
             get {
                 return ((string)(this["SenderMail"]));
@@ -460,7 +460,7 @@ namespace LectioDivina.Service.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Strachocin")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Strachocin01")]
         public string SenderPwd {
             get {
                 return ((string)(this["SenderPwd"]));

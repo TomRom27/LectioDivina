@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="LectioDivinaAutor" Codepage="1250" Language="1033" Version="1.0.3.0" Manufacturer="TomekR" UpgradeCode="75c3ec36-10ee-483d-9db3-53dd1181a84e">
+  <Product Id="*" Name="LectioDivinaAutor" Codepage="1250" Language="1033" Version="1.0.5.0" Manufacturer="TomekR" UpgradeCode="7D321374-BF02-4267-A90F-EEC6C99C5B4F">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <!-- define, how to do the upgrade -->
     <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
-    <Upgrade Id="8DCF1DEA-8275-48F3-81D6-E5AB43FCE57A">
+    <Upgrade Id="7D321374-BF02-4267-A90F-EEC6C99C5B4F">
       <UpgradeVersion
          Minimum="1.0.0.0" Maximum="99.0.0.0"
          Property="PREVIOUSVERSIONSINSTALLED"
