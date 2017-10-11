@@ -31,7 +31,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Text="LECTIO DIVINA" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
                     <TextBlock Grid.Column="0" Grid.Row="1" Text="Data niedzieli" FontWeight="Bold" />
-                    <DatePicker Name="DayPicker" Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" HorizontalAlignment="Left" Text="{Binding TitlePage.SundayDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, TargetNullValue=''}" FirstDayOfWeek="Monday">
+                    <DatePicker Name="DayPicker" Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" HorizontalAlignment="Left" SelectedDate="{Binding TitlePage.SundayDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, TargetNullValue=''}" FirstDayOfWeek="Monday">
                         <!-- disable date editing, only selection is possible -->
                         <DatePicker.Resources>
                             <Style TargetType="DatePickerTextBox">

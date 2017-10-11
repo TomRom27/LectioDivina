@@ -74,11 +74,16 @@ namespace LectioDivina.Service
             // Select a mailbox. Case-insensitive
             ic.SelectMailbox(Properties.Settings.Default.MailImapInboxName);
 
-            OnNotification("Pobieram...");
+            string text = "Pobieram...";
+            if (dayStart.HasValue)
+                text = text + " od " + dayStart.Value.ToShortDateString();
+            if (dayEnd.HasValue)
+                text = text + " do " + dayEnd.Value.ToShortDateString();
+            OnNotification(text);
             AE.Net.Mail.MailMessage[] messages = ic.GetMessages(0, Properties.Settings.Default.MailReadCount,
                 headersonly: false);
             System.Diagnostics.Trace.WriteLine("Received messages:" + messages.Length.ToString());
-            OnNotification("Pobrano " + messages.Length);
+            OnNotification("Wszystkich " + messages.Length);
 
             List<OneDayContemplation> list = new List<OneDayContemplation>();
             foreach (var message in messages)
