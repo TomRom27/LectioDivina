@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using DocMaker;
-using DocMaker.WordAutomation;
+using DocMaker.Word.Automation;
 
 namespace LectioDivina.Service
 {

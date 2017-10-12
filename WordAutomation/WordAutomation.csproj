@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordCommon.cs" />
     <Compile Include="WordDocument.cs" />
   </ItemGroup>
   <ItemGroup>

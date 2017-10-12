@@ -6,9 +6,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-
 using LectioDivina.Model;
-using DocMaker.WordAutomation;
+using DocMaker.Word.Automation;
+using DocMaker.Word.Common;
 
 namespace LectioDivina.Service
 {

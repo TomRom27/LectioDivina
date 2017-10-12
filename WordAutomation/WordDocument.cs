@@ -8,21 +8,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MSWord = Microsoft.Office.Interop.Word;
 
-namespace DocMaker.WordAutomation
-{
-    public enum WordFormats
-    {
-        WordDocX,
-        WordDoc,
-        Pdf
-    };
+using DocMaker.Word.Common;
 
-    public enum ImageFormats
-    {
-        Jpg,
-        Png,
-        Gif
-    };
+namespace DocMaker.Word.Automation
+{
 
     public class WordDocument : IDocMaker
     {
@@ -62,7 +51,7 @@ namespace DocMaker.WordAutomation
         {
             // Word 2013 and later can open in reading view where edit is not possible
             // so we need to change the mode to "normal"
-            if (word.Version.CompareTo("14.0") >= 0)
+            if (word.Version.CompareTo(WordCommon.Word2013Version) >= 0)
                 if (word.ActiveWindow.View.Type == MSWord.WdViewType.wdReadingView)
                     word.ActiveWindow.View.Type = MSWord.WdViewType.wdPrintView;
         }

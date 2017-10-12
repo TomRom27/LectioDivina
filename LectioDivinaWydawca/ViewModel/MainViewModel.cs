@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
+using DocMaker.Word.Automation;
+using DocMaker.Word.Common;
+
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
@@ -11,7 +15,6 @@ using LectioDivina.Service;
 using LectioDivinaWydawca;
 
 using MvvmLight.Extensions;
-using DocMaker.WordAutomation;
 
 namespace LectioDivina.Wydawca.ViewModel
 {
