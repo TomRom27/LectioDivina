@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OnJestPostSender.cs" />
+    <Compile Include="OnJestPostMaker2.cs" />
     <Compile Include="HtmlText.cs" />
     <Compile Include="Localization.cs" />
+    <Compile Include="OnJestEbookMaker.cs" />
     <Compile Include="OnJestPostMaker.cs" />
     <Compile Include="MailTransport.cs" />
     <Compile Include="LectioDivinaGenerator.cs" />

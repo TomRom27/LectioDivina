@@ -110,6 +110,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="bookFiles\content.opf" />
+    <None Include="bookFiles\ebook.mobi" />
+    <None Include="bookFiles\titlepage.xhtml" />
+    <None Include="bookFiles\toc.ncx" />
     <None Include="Lectio Divina szablon.docx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -159,6 +163,14 @@
       <Link>Microsoft.mshtml.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="bookFiles\cover_image.jpg" />
+    <Resource Include="bookFiles\hands.jpg" />
+    <Content Include="bookFiles\kindlegen.exe" />
+    <Content Include="bookFiles\LectioDivina.html" />
+    <Resource Include="bookFiles\onjestlogo_withicon.jpg" />
+    <Content Include="bookFiles\page_styles.css" />
+    <Content Include="bookFiles\stylesheet.css" />
+    <Content Include="bookFiles\templateLectioDivina.html" />
     <Content Include="onjest post szablon.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -168,6 +180,7 @@
     <Resource Include="Images\LectioWydawca.png" />
     <Resource Include="LectioDivinaWydawca.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

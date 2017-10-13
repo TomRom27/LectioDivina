@@ -232,6 +232,7 @@ namespace LectioDivina.Wydawca.ViewModel
         public RelayCommand GenerateLectioTarget { get; set; }
         public RelayCommand SelectTemplate { get; set; }
         public RelayCommand SelectTarget { get; set; }
+        public RelayCommand SelectEbookSource { get; set; }
         public RelayCommand SelectPicture { get; set; }
         public RelayCommand SelectShortContemplation { get; set; }
 
@@ -250,6 +251,7 @@ namespace LectioDivina.Wydawca.ViewModel
             GenerateLectioTarget = new RelayCommand(GenerateLectioTargetDoc);
             SelectTemplate = new RelayCommand(SelectLectioTemplate);
             SelectTarget = new RelayCommand(SelectLectioTarget);
+            SelectEbookSource = new RelayCommand(SelectLectioEbookSource);
             SelectPicture = new RelayCommand(SelectPictureFile);
             SelectShortContemplation = new RelayCommand(SelectShortContemplationFile);
         }
@@ -285,6 +287,13 @@ namespace LectioDivina.Wydawca.ViewModel
                 TitlePage.LectioTargetFolder = folder;
         }
 
+        private void SelectLectioEbookSource()
+        {
+            string folder = dialogService.SelectFolder("Wybierz katalog zawierajacy pliki html do tworzenia ebooka Lectio Divina", TitlePage.LectioEbookSourceFolder);
+            if (!String.IsNullOrEmpty(folder))
+                TitlePage.LectioEbookSourceFolder = folder;
+        }
+
         private void RefreshTargetFileProperty()
         {
             TitlePage.LectioTargetFile = dataService.ProposeLectioTargetName(TitlePage.LectioTargetFolder, TitlePage.WeekInvocation, TitlePage.WeekDescription);
@@ -310,7 +319,7 @@ namespace LectioDivina.Wydawca.ViewModel
             bool showFinishInfo = true;
 
             System.Threading.Tasks.Task.Factory
-                /* in fact synchronously - as we use current sync context */
+            /* in fact synchronously - as we use current sync context */
             .StartNew(() =>
             {
                 List<string> issues = lectioDivinaWeek.Validate();
@@ -340,7 +349,7 @@ namespace LectioDivina.Wydawca.ViewModel
                     GenerateLectio();
 
             }, CancellationToken.None, TaskCreationOptions.LongRunning, scheduler)
-                /* when completed, display response */
+            /* when completed, display response */
             .ContinueWith((t) =>
             {
                 dialogService.SetNormal();
@@ -366,6 +375,21 @@ namespace LectioDivina.Wydawca.ViewModel
 
             if (TitlePage.IsPictureFromShortContemplation)
                 ExtractPictureFromShortContemplation();
+
+            try
+            {
+                if (!String.IsNullOrEmpty(TitlePage.LectioEbookSourceFolder))
+                {
+                    var ebookLectioGenerator = new OnJestEbookMaker(TitlePage.LectioEbookSourceFolder, lectioDivinaWeek);
+                    string ebookOutputName = TitlePage.LectioTargetFile.Replace(".docx", ".mobi");
+                    ebookLectioGenerator.Notification += Progress_Notification;
+                    ebookLectioGenerator.GenerateEbook(ebookOutputName);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log("B³¹d podczas generowania ebook-a\r\n" + exception.Message);
+            }
 
             var lectioGenerator = new LectioDivinaGenerator();
 
@@ -425,7 +449,7 @@ namespace LectioDivina.Wydawca.ViewModel
         private void SendLectioToServer()
         {
             System.Threading.Tasks.Task.Factory
-                /* in fact synchronously - as we use current sync context */
+            /* in fact synchronously - as we use current sync context */
             .StartNew(() =>
             {
                 List<string> issues = lectioDivinaWeek.Validate();
@@ -454,7 +478,7 @@ namespace LectioDivina.Wydawca.ViewModel
                     SendLectio();
 
             })
-                /* when completed, display response */
+            /* when completed, display response */
             .ContinueWith((t) =>
             {
                 if (t.Exception != null)
@@ -473,7 +497,7 @@ namespace LectioDivina.Wydawca.ViewModel
 
         private void SendLectio()
         {
-            var poster = new OnJestPostMaker();
+            var poster = new OnJestPostSender();
 
             poster.Notification += Progress_Notification;
 
@@ -581,8 +605,8 @@ namespace LectioDivina.Wydawca.ViewModel
             if (String.IsNullOrEmpty(TitlePage.WeekPictureName))
                 TitlePage.WeekPictureName = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(TitlePage.WeekShortContemplationName),
                                             "obrazek.jpg");
-            Log("Biorê obrazek z "+ TitlePage.WeekShortContemplationName);
-            Log("zapisujê jako "+TitlePage.WeekPictureName);
+            Log("Biorê obrazek z " + TitlePage.WeekShortContemplationName);
+            Log("zapisujê jako " + TitlePage.WeekPictureName);
 
             WordDocument word = new WordDocument();
             word.Open(TitlePage.WeekShortContemplationName, false);
