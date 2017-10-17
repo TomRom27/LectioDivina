@@ -54,10 +54,10 @@
                         <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectTarget}"/>
                         <TextBox Name="LectioTargetBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" Text="{Binding TitlePage.LectioTargetFolder,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </DockPanel>
-                    <TextBlock Grid.Column="0" Grid.Row="6" Text ="Katalog dla plików ebook" FontWeight="Bold" />
+                    <TextBlock Grid.Column="0" Grid.Row="6" Text ="Katalog plików dla ebook" FontWeight="Bold" />
                     <DockPanel Grid.Column="1" Grid.Row="6" LastChildFill="True">
                         <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectEbookSource}"/>
-                        <TextBox Name="LectioEbookSourceBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" Text="{Binding TitlePage.LectioEbookSourceFolder,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <TextBox Name="LectioEbookSourceBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" Text="{Binding TitlePage.LectioEbookSourceFolder,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ToolTip="Wskaż katalog, w którym są pliki szablonu, styli itd. do generowania ebooka" />
                     </DockPanel>
 
                     <DockPanel Grid.Column="1" Grid.Row="7" LastChildFill="True">

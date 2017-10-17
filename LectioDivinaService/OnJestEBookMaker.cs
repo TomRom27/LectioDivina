@@ -8,20 +8,23 @@ namespace LectioDivina.Service
 {
     public class OnJestEbookMaker
     {
-        private string ebookFilesPath;
+        private string ebookSourceFilesFolder;
+        private string ebookDestinationFolder;
         private LectioDivinaWeek lectioWeek;
 
         public event EventHandler<NotificationEventArgs> Notification;
 
-        public OnJestEbookMaker(string ebookFilesPath, LectioDivinaWeek lectioWeek)
+        public OnJestEbookMaker(string ebookDestinationDir, LectioDivinaWeek lectioWeek)
         {
-            this.ebookFilesPath = ebookFilesPath;
+            this.ebookDestinationFolder = ebookDestinationDir;
+            this.ebookSourceFilesFolder =  ebookDestinationDir;
+
             this.lectioWeek = lectioWeek;
         }
 
         public void GenerateEbook(string ebookOutputFile)
         {
-            string templateFileName = GetFileWithNamePattern(ebookFilesPath, "template*.html");
+            string templateFileName = GetFileWithNamePattern(ebookSourceFilesFolder, "template*.html");
             OnNotification("startuje tworzenie ebooka na podstawie szablonu " + templateFileName);
 
             OnJestPostMaker2 postCreator = new OnJestPostMaker2(Properties.Settings.Default.OnJestPostOneDayKey, Properties.Settings.Default.OnJestPostTemplate);
@@ -96,26 +99,39 @@ namespace LectioDivina.Service
             System.IO.File.WriteAllText(outputFileName, content);
         }
 
-        private void GenerateMobiFile(string ebookOutputFile)
+        private void GenerateMobiFile3(string ebookOutputFile)
         {
-            string opfFileName = GetFileWithNamePattern(ebookFilesPath, "*.opf");
+            string opfFileName = GetFileWithNamePattern(ebookSourceFilesFolder, "*.opf");
             OnNotification("generuje plik mobi na podstawie pliku " + opfFileName);
 
-            startCommand(ebookFilesPath + "\\kindlegen.exe", @" " + opfFileName + " -o ebook.mobi");
-            startCommand("cmd", @"/c copy " + ebookFilesPath + "\\ebook.mobi \"" + ebookOutputFile + "\"");
+            startCommand(ebookSourceFilesFolder + "\\kindlegen.exe", @" " + opfFileName + " -o ebook.mobi");
+            startCommand("cmd", @"/c copy " + ebookSourceFilesFolder + "\\ebook.mobi \"" + ebookOutputFile + "\"");
+        }
+
+        private void GenerateMobiFile(string ebookOutputFile)
+        {
+            string opfFileName = GetFileWithNamePattern(ebookSourceFilesFolder, "*.opf");
+            OnNotification("generuje plik mobi na podstawie pliku " + opfFileName);
+
+
+            startCommand(System.IO.Path.Combine(ebookSourceFilesFolder, Properties.Settings.Default.EbookCmd), opfFileName + " -o ebook.mobi");
+                            
+            startCommand("cmd", @"/c copy " + ebookSourceFilesFolder + "\\ebook.mobi \"" + ebookOutputFile + "\"");
         }
 
         private void startCommand(string command, string parameters)
         {
+            OnNotification(command + "->" + parameters);
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
 
             proc.EnableRaisingEvents = false;
-            proc.StartInfo.WorkingDirectory = ebookFilesPath;
+            proc.StartInfo.WorkingDirectory = ebookSourceFilesFolder;
             proc.StartInfo.CreateNoWindow = true;
             proc.StartInfo.FileName = command;
             proc.StartInfo.Arguments = parameters;
             proc.Start();
             proc.WaitForExit();
+            OnNotification("Wynik z pliku mobi jest: " + proc.ExitCode.ToString()+" (0 = OK)");
         }
 
         private void OnNotification(string notification)
@@ -125,6 +141,25 @@ namespace LectioDivina.Service
                 var args = new NotificationEventArgs("ebook: " + notification);
                 Notification.BeginInvoke(this, args, null, null);
             }
+        }
+
+        // if s is relative path, is changed to absolute - started from app path
+        private string EnsureAppFolder(string s)
+        {
+            if (!System.IO.Path.IsPathRooted(s))
+            {
+                s = EnsureRootFolder( System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), s);
+            }
+            return s;
+        }
+
+        private string EnsureRootFolder(string root, string relative)
+        {
+            if (!System.IO.Path.IsPathRooted(relative))
+            {
+                relative = System.IO.Path.Combine(root, relative);
+            }
+            return relative;
         }
     }
 }

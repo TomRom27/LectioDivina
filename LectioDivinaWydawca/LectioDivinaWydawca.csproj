@@ -111,7 +111,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="bookFiles\content.opf" />
-    <None Include="bookFiles\ebook.mobi" />
     <None Include="bookFiles\titlepage.xhtml" />
     <None Include="bookFiles\toc.ncx" />
     <None Include="Lectio Divina szablon.docx" />

@@ -469,5 +469,14 @@ namespace LectioDivina.Service.Properties {
                 this["SenderPwd"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("kindlegen.exe")]
+        public string EbookCmd {
+            get {
+                return ((string)(this["EbookCmd"]));
+            }
+        }
     }
 }
