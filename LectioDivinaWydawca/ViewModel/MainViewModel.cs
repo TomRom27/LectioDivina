@@ -381,13 +381,14 @@ namespace LectioDivina.Wydawca.ViewModel
                 if (!String.IsNullOrEmpty(TitlePage.LectioEbookSourceFolder))
                 {
                     var ebookLectioGenerator = new OnJestEbookMaker(TitlePage.LectioEbookSourceFolder, lectioDivinaWeek);
-                    string ebookOutputName = TitlePage.LectioTargetFile.Replace(".docx", ".mobi");
+                    
                     ebookLectioGenerator.Notification += Progress_Notification;
-                    ebookLectioGenerator.GenerateEbook(ebookOutputName);
+                    TitlePage.LectioEbookTargetFile = ebookLectioGenerator.GenerateEbook();
                 }
             }
             catch (Exception exception)
             {
+                TitlePage.LectioEbookTargetFile = "";
                 Log("B³¹d podczas generowania ebook-a\r\n" + exception.Message);
             }
 
@@ -501,7 +502,7 @@ namespace LectioDivina.Wydawca.ViewModel
 
             poster.Notification += Progress_Notification;
 
-            poster.SendLectio(lectioDivinaWeek.Title.WeekPictureName, lectioDivinaWeek.Title.LectioTargetFile,
+            poster.SendLectio(lectioDivinaWeek.Title.WeekPictureName, lectioDivinaWeek.Title.LectioTargetFile, TitlePage.LectioEbookTargetFile,
                                 lectioDivinaWeek);
         }
 

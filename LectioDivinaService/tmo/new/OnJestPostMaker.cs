@@ -18,7 +18,7 @@ namespace LectioDivina.Service
 
         private LectioDivina.OnJestSlowoProxy.OnJestSlowoProxy onJestProxy;
         private string tempPath;
-        private OnJestHtmlMaker htmlContentCreator;
+        private OnJestPostMaker2 htmlContentCreator;
 
         public event EventHandler<NotificationEventArgs> Notification;
 
@@ -28,10 +28,10 @@ namespace LectioDivina.Service
 
             tempPath = System.IO.Path.GetTempPath();
 
-            htmlContentCreator = new OnJestHtmlMaker(Properties.Settings.Default.OnJestPostOneDayKey, Properties.Settings.Default.OnJestPostTemplate);
+            htmlContentCreator = new OnJestPostMaker2(Properties.Settings.Default.OnJestPostOneDayKey, Properties.Settings.Default.OnJestPostTemplate);
         }
 
-        public void SendLectio(string picturepath, string lectioWordFile, string lectioEbookFile, LectioDivinaWeek lectioWeek)
+        public void SendLectio(string picturepath, string lectioWordFile, LectioDivinaWeek lectioWeek)
         {
             if (!File.Exists(lectioWordFile))
                 throw new Exception("Nie znaleziono pliku Lectio Divina: " + lectioWordFile);
@@ -57,35 +57,9 @@ namespace LectioDivina.Service
             SendDayPost(lectioWeek.Friday);
             SendDayPost(lectioWeek.Saturday);
 
-            if (!String.IsNullOrEmpty(lectioEbookFile))
-            {
-                if (File.Exists(lectioEbookFile))
-                    SendEbook(lectioEbookFile, lectioWeek);
-                else
-                {
-                    OnNotification(String.Format("Nie znaleziono ebooka {0} do wysyłki - ignoruję ebooka",lectioEbookFile));
-                }
-            }
-            else
-                OnNotification("Ebook nie będzie wysłany (brak nazwy)");
-
             SendOnJestAdminInfo(lectioWeek);
 
             OnNotification("Wysyłanie zakończone");
-        }
-
-        private void SendEbook(string lectioEbookFile, LectioDivinaWeek lectioWeek)
-        {
-            string fileName = CreateName(Properties.Settings.Default.OnJestEbookShortNameTemplate, lectioWeek);
-            // we want to keep origial extension, so no matte what i from the template, we stick to the "old" one
-            Path.ChangeExtension(fileName, Path.GetExtension(lectioEbookFile));
-
-            OnNotification("Wysyłam ebook jako " + fileName);
-
-            string newName = System.IO.Path.Combine(tempPath, fileName);
-            File.Copy(lectioEbookFile, newName);
-
-            SendFile(newName);
         }
 
         private void SendOnJestAdminInfo(LectioDivinaWeek lectioWeek)
@@ -121,7 +95,7 @@ namespace LectioDivina.Service
             word.SaveAsDifferentFormat(newName, WordFormats.Pdf);
             word.Close();
 
-            SendFile(newName);
+            onJestProxy.UploadFile(Properties.Settings.Default.OnJestUser, Properties.Settings.Default.OnJestPwd, newName);
         }
 
         private void SendPicture(string picturepath, LectioDivinaWeek lectioWeek)
@@ -135,7 +109,7 @@ namespace LectioDivina.Service
                 newName, Properties.Settings.Default.OnJestPictureMaxWidth, null);
 
             // send
-            SendFile(newName);
+            onJestProxy.UploadFile(Properties.Settings.Default.OnJestUser, Properties.Settings.Default.OnJestPwd, newName);
         }
 
         private string CreateName(string nameTemplate, LectioDivinaWeek lectioWeek)
@@ -143,10 +117,7 @@ namespace LectioDivina.Service
             return lectioWeek.Title.SundayDate.ToString(nameTemplate);
         }
 
-        private void SendFile(string filePath)
-        {
-            onJestProxy.UploadFile(Properties.Settings.Default.OnJestUser, Properties.Settings.Default.OnJestPwd, filePath);
-        }
+
 
         private void OnNotification(string notification)
         {

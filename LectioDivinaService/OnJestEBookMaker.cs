@@ -17,17 +17,25 @@ namespace LectioDivina.Service
         public OnJestEbookMaker(string ebookDestinationDir, LectioDivinaWeek lectioWeek)
         {
             this.ebookDestinationFolder = ebookDestinationDir;
-            this.ebookSourceFilesFolder =  ebookDestinationDir;
+            this.ebookSourceFilesFolder = ebookDestinationDir;
 
             this.lectioWeek = lectioWeek;
         }
 
-        public void GenerateEbook(string ebookOutputFile)
+        public string FilenameExt
+        {
+            get
+            {
+                return "mobi";
+            }
+        }
+
+        public string  GenerateEbook()
         {
             string templateFileName = GetFileWithNamePattern(ebookSourceFilesFolder, "template*.html");
             OnNotification("startuje tworzenie ebooka na podstawie szablonu " + templateFileName);
 
-            OnJestPostMaker2 postCreator = new OnJestPostMaker2(Properties.Settings.Default.OnJestPostOneDayKey, Properties.Settings.Default.OnJestPostTemplate);
+            OnJestHtmlMaker postCreator = new OnJestHtmlMaker(Properties.Settings.Default.OnJestPostOneDayKey, Properties.Settings.Default.OnJestPostTemplate);
             string sundayPost = postCreator.CreateContentFromTemplate(lectioWeek.Sunday);
             string mondayPost = postCreator.CreateContentFromTemplate(lectioWeek.Monday);
             string tuesdayPost = postCreator.CreateContentFromTemplate(lectioWeek.Tuesday);
@@ -65,7 +73,7 @@ namespace LectioDivina.Service
 
             string outputFileName = GetOutputFileName(templateFileName);
             SaveContent(htmlContent, outputFileName);
-            GenerateMobiFile(ebookOutputFile);
+            return GenerateMobiFile();
         }
 
         private string GetFileWithNamePattern(string path, string filePattern)
@@ -99,27 +107,21 @@ namespace LectioDivina.Service
             System.IO.File.WriteAllText(outputFileName, content);
         }
 
-        private void GenerateMobiFile3(string ebookOutputFile)
-        {
-            string opfFileName = GetFileWithNamePattern(ebookSourceFilesFolder, "*.opf");
-            OnNotification("generuje plik mobi na podstawie pliku " + opfFileName);
-
-            startCommand(ebookSourceFilesFolder + "\\kindlegen.exe", @" " + opfFileName + " -o ebook.mobi");
-            startCommand("cmd", @"/c copy " + ebookSourceFilesFolder + "\\ebook.mobi \"" + ebookOutputFile + "\"");
-        }
-
-        private void GenerateMobiFile(string ebookOutputFile)
+        private string GenerateMobiFile()
         {
             string opfFileName = GetFileWithNamePattern(ebookSourceFilesFolder, "*.opf");
             OnNotification("generuje plik mobi na podstawie pliku " + opfFileName);
 
 
-            startCommand(System.IO.Path.Combine(ebookSourceFilesFolder, Properties.Settings.Default.EbookCmd), opfFileName + " -o ebook.mobi");
-                            
-            startCommand("cmd", @"/c copy " + ebookSourceFilesFolder + "\\ebook.mobi \"" + ebookOutputFile + "\"");
+            if (startCommand(System.IO.Path.Combine(ebookSourceFilesFolder, Properties.Settings.Default.EbookCmd), opfFileName + " -o ebook.mobi"))
+                return ebookSourceFilesFolder + "\\ebook.mobi";
+            else
+                return null;
+
+            //startCommand("cmd", @"/c copy " + ebookSourceFilesFolder + "\\ebook.mobi \"" + ebookOutputFile + "\"");
         }
 
-        private void startCommand(string command, string parameters)
+        private bool startCommand(string command, string parameters)
         {
             OnNotification(command + "->" + parameters);
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
@@ -131,7 +133,8 @@ namespace LectioDivina.Service
             proc.StartInfo.Arguments = parameters;
             proc.Start();
             proc.WaitForExit();
-            OnNotification("Wynik z pliku mobi jest: " + proc.ExitCode.ToString()+" (0 = OK)");
+            OnNotification("Wynik z pliku mobi jest: " + proc.ExitCode.ToString() + " (0 = OK)");
+            return proc.ExitCode == 0;
         }
 
         private void OnNotification(string notification)
@@ -148,7 +151,7 @@ namespace LectioDivina.Service
         {
             if (!System.IO.Path.IsPathRooted(s))
             {
-                s = EnsureRootFolder( System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), s);
+                s = EnsureRootFolder(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), s);
             }
             return s;
         }

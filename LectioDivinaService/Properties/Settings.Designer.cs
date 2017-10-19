@@ -421,6 +421,15 @@ namespace LectioDivina.Service.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ebookyyMMdd.")]
+        public string OnJestEbookShortNameTemplate {
+            get {
+                return ((string)(this["OnJestEbookShortNameTemplate"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public int OnJestPictureMaxWidth {
             get {

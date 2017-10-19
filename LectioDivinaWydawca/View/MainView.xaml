@@ -54,18 +54,21 @@
                         <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectTarget}"/>
                         <TextBox Name="LectioTargetBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" Text="{Binding TitlePage.LectioTargetFolder,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </DockPanel>
-                    <TextBlock Grid.Column="0" Grid.Row="6" Text ="Katalog plików dla ebook" FontWeight="Bold" />
-                    <DockPanel Grid.Column="1" Grid.Row="6" LastChildFill="True">
-                        <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectEbookSource}"/>
-                        <TextBox Name="LectioEbookSourceBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" Text="{Binding TitlePage.LectioEbookSourceFolder,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ToolTip="Wskaż katalog, w którym są pliki szablonu, styli itd. do generowania ebooka" />
-                    </DockPanel>
 
-                    <DockPanel Grid.Column="1" Grid.Row="7" LastChildFill="True">
+                    <DockPanel Grid.Column="1" Grid.Row="6" LastChildFill="True">
                         <Button Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" ToolTip="Otwórz plik Lectio w Wordzie" Command="{Binding OpenLectioTarget}">
                             <Image Source="../Images/Word.png"/>
                         </Button>
                         <TextBlock Margin="5,0,0,0" Text="{Binding TitlePage.LectioTargetFile}"/>
                     </DockPanel>
+                    <TextBlock Grid.Column="0" Grid.Row="7" Text ="Katalog plików dla ebook" FontWeight="Bold" />
+                    <StackPanel Grid.Column="1" Grid.Row="7" >
+                        <DockPanel LastChildFill="True">
+                            <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectEbookSource}"/>
+                            <TextBox Name="LectioEbookSourceBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" Text="{Binding TitlePage.LectioEbookSourceFolder,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ToolTip="Wskaż katalog, w którym są pliki szablonu, styli itd. do generowania ebooka" />
+                        </DockPanel>
+                        <TextBlock Margin="5,0,0,0" Text="{Binding TitlePage.LectioEbookTargetFile}"/>
+                    </StackPanel>
                     <StackPanel Grid.ColumnSpan="2" Grid.Column="0"  Grid.Row="8" Orientation="Horizontal"  >
                         <RadioButton Content="Brać obrazek bezpośrednio z pliku" Margin="3,0,0,0" IsChecked="{Binding TitlePage.IsPictureFromOwnFile}"/>
                         <RadioButton Content="Brać obrazek z Rozważań krótkich" Margin="20,0,0,0" IsChecked="{Binding TitlePage.IsPictureFromShortContemplation}"/>
@@ -85,16 +88,16 @@
                         <Button Name="ReceiveButton" HorizontalAlignment="Left" Margin="50,0,0,0" Command="{Binding Receive}">Pobierz</Button>
                         <Button Name="SaveButton" HorizontalAlignment="Left" Margin="10,0,00,0" Command="{Binding Save}">Zapisz</Button>
                         <Button Name="CreateTargetButton" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding GenerateLectioTarget}">
-                            <StackPanel Orientation="Horizontal">                                
+                            <StackPanel Orientation="Horizontal">
                                 <Image Source="../Images/Word.png"/>
                                 <TextBlock Text="Utwórz" Margin="5,0,5,0" VerticalAlignment="Center"></TextBlock>
                             </StackPanel>
-                            </Button>
+                        </Button>
                         <Button Name="SendButton" HorizontalAlignment="Left" Margin="50,0,0,0" Command="{Binding Send}">Wyślij</Button>
                         <Button Name="CloseButton" HorizontalAlignment="Right" Margin="50,0,0,0"  Command="{Binding CloseApp}" >Zamknij</Button>
                     </StackPanel>
                     <ScrollViewer Name="LogBoxScroll" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="12" VerticalScrollBarVisibility="Auto" Margin="0,5,0,0" >
-                        <TextBox Name="LogBox" IsEnabled="False" MinHeight="210"/>
+                        <TextBox Name="LogBox" IsEnabled="False" MinHeight="170"/>
                     </ScrollViewer>
                 </Grid>
 
@@ -131,7 +134,7 @@
                                                  Contemplation5="{Binding Monday.Contemplation5, Mode=TwoWay}"
                                                  Contemplation6="{Binding Monday.Contemplation6, Mode=TwoWay}"
                                                  Prayer="{Binding Monday.Prayer, Mode=TwoWay}"/>
-                </ScrollViewer>                
+                </ScrollViewer>
             </TabItem>
             <TabItem Name="TuesdayTab" Header="Wtorek" >
                 <ScrollViewer VerticalScrollBarVisibility="Auto">

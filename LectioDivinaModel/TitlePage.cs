@@ -21,5 +21,6 @@ namespace LectioDivina.Model
         public string LectioTargetFolder { get; set; }
         public string LectioTargetFile { get; set; }
         public string LectioEbookSourceFolder { get; set; }
+        public string LectioEbookTargetFile { get; set; }
     }
 }

@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OnJestHtmlMaker.cs" />
     <Compile Include="OnJestPostSender.cs" />
     <Compile Include="OnJestPostMaker2.cs" />
     <Compile Include="HtmlText.cs" />

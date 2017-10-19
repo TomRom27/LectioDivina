@@ -131,6 +131,9 @@
     <Setting Name="OnJestLectioNameTemplate" Type="System.String" Scope="Application">
       <Value Profile="(Default)">l\dyyMMdd.p\d\f</Value>
     </Setting>
+    <Setting Name="OnJestEbookShortNameTemplate" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ebookyyMMdd.</Value>
+    </Setting>
     <Setting Name="OnJestPictureMaxWidth" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1000</Value>
     </Setting>
