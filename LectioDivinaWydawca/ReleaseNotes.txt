@@ -1,5 +1,5 @@
 ﻿zamykanie Worda po nieudanych próbach!!!
-1.1.1 2017-10-20
+1.1.1 2017-11-05
 - dodano generowanie i wysyłanie pliku mobi
 1.0.7 2017-10-11
 - dodano IDocMaker (i zmiany w przestrzeniach nazw)
