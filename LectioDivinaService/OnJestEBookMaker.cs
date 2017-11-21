@@ -112,7 +112,7 @@ namespace LectioDivina.Service
             string opfFileName = GetFileWithNamePattern(ebookSourceFilesFolder, "*.opf");
             OnNotification("generuje plik mobi na podstawie pliku " + opfFileName);
 
-
+            opfFileName = EnsureNeededQuatation(opfFileName);
             if (startCommand(System.IO.Path.Combine(ebookSourceFilesFolder, Properties.Settings.Default.EbookCmd), opfFileName + " -o ebook.mobi"))
                 return ebookSourceFilesFolder + "\\ebook.mobi";
             else
@@ -123,6 +123,7 @@ namespace LectioDivina.Service
 
         private bool startCommand(string command, string parameters)
         {
+            command = EnsureNeededQuatation(command);
             OnNotification(command + "->" + parameters);
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
 
@@ -164,5 +165,20 @@ namespace LectioDivina.Service
             }
             return relative;
         }
+
+
+        private string EnsureNeededQuatation(string command)
+        {
+            if (command.IndexOf(" ") >= 0)
+            {
+                if (command[0] != '"')
+                    command = '"' + command;
+                if (command[command.Length-1] != '"')
+                    command = command+ '"';
+
+            }
+            return command;
+        }
+
     }
 }

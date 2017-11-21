@@ -421,7 +421,7 @@ namespace LectioDivina.Service.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ebookyyMMdd.")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ebookyyMMdd.\\mobi")]
         public string OnJestEbookShortNameTemplate {
             get {
                 return ((string)(this["OnJestEbookShortNameTemplate"]));

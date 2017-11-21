@@ -83,7 +83,7 @@ namespace LectioDivina.Service
             OnNotification("Wysyłam ebook jako " + fileName);
 
             string newName = System.IO.Path.Combine(tempPath, fileName);
-            File.Copy(lectioEbookFile, newName);
+            File.Copy(lectioEbookFile, newName,true);
 
             SendFile(newName);
         }

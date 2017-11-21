@@ -1,4 +1,7 @@
 ﻿zamykanie Worda po nieudanych próbach!!!
+1.1.3
+- poprawiono błąd generowania mobi dla nazwy katalogu ze spacją
+- zmieniono nazwę wysyłanego pliku 
 1.1.1 2017-10-20
 - dodano generowanie i wysyłanie pliku mobi
 1.0.7 2017-10-11
