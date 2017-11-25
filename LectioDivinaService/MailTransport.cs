@@ -112,8 +112,29 @@ namespace LectioDivina.Service
             System.Diagnostics.Trace.WriteLine("Message.Subject=" + message.Subject);
             System.Diagnostics.Trace.WriteLine("Message.Date =" + message.Date.ToString("yyyy-MM-dd hh:mm:ss"));
             System.Diagnostics.Trace.WriteLine("Message.Body =" + message.Body);
-            OneDayContemplation contemplation;
+            System.Diagnostics.Trace.WriteLine("Message.Attachments.No =" + message.Attachments.Count);
+
+            OneDayContemplation contemplation = null;
             string xml;
+
+            if (message.Attachments.Count > 0)
+            {
+                // first we try with first attachment
+                try
+                {
+                    System.Diagnostics.Trace.WriteLine("Trying to use attachment to get contemplation:");
+                    xml = GetStringAttachment(message.Attachments.First());
+                    contemplation = SerializationHelper.Deserialize<OneDayContemplation>(xml);
+
+                    return contemplation;
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Trace.WriteLine("Tried to use attachment to get contemplation, but failed " + ex.Message);
+                    // if the "attachment approach" failed, we continue with norma (body) approach
+                    // that's only logging in the catch
+                }
+            }
             try
             {
                 xml = message.Body;
@@ -163,6 +184,13 @@ namespace LectioDivina.Service
                 Notification.BeginInvoke(this, args, null, null);
             }
         }
+
+
+        private string GetStringAttachment(AE.Net.Mail.Attachment attachment)
+        {
+            return attachment.Body; 
+        }
+
 
     }
 }
