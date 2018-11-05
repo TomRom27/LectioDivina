@@ -1,4 +1,6 @@
 ﻿zamykanie Worda po nieudanych próbach!!!
+1.1.6 2018-11-06
+- poprawiony błąd pobierania zbyt wielu dni (2 niedziel tj. także następnej)
 1.1.5 2018-04-23
 - aktualizacji referencji MSHTML do VS2017 Community
 - ustawienia wysyłania maila do admina (SSL)

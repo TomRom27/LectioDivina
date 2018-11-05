@@ -525,7 +525,7 @@ namespace LectioDivina.Wydawca.ViewModel
                     else
                     {
                         // if the mode is not Week, then we get lectios for given week only
-                        contemplations = transport.RetrieveContemplations(TitlePage.SundayDate, TitlePage.SundayDate.AddDays(7));
+                        contemplations = transport.RetrieveContemplations(TitlePage.SundayDate, TitlePage.SundayDate.AddDays(6));
                     }
                     foreach (var contemplation in contemplations)
                     {
