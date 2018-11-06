@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="LectioDivinaAutor" Codepage="1250" Language="1033" Version="1.0.5.0" Manufacturer="TomekR" UpgradeCode="7D321374-BF02-4267-A90F-EEC6C99C5B4F">
+    <!-- never change UpgradeCode !-->
+  <Product Id="*" Name="LectioDivinaAutor" Codepage="1250" Language="1033" Version="1.0.6.0" Manufacturer="TomekR" UpgradeCode="7D321374-BF02-4267-A90F-EEC6C99C5B4F">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <!-- define, how to do the upgrade -->
@@ -71,6 +72,7 @@
       <File Source="$(var.LectioDivinaAutor.TargetPath).config" />
       <File Source="$(var.LectioDivinaAutor.TargetDir)\Lectio Divina szablon jeden dzień.doc" />
       <File Source="$(var.LectioDivinaAutor.TargetDir)\AE.Net.Mail.dll" />
+      <File Source="$(var.LectioDivinaAutor.TargetDir)\DocMaker.dll" />
       <File Source="$(var.LectioDivinaAutor.TargetDir)\GalaSoft.MvvmLight.dll" />
       <File Source="$(var.LectioDivinaAutor.TargetDir)\GalaSoft.MvvmLight.Extras.dll" />
       <File Source="$(var.LectioDivinaAutor.TargetDir)\LectioDivinaControls.dll" />

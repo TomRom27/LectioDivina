@@ -30,7 +30,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold">Data</TextBlock>
             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
-                <DatePicker Name="DayPicker" Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Text="{Binding Day, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, TargetNullValue=''}" FirstDayOfWeek="Monday">
+                <DatePicker Name="DayPicker" Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" SelectedDate="{Binding Day, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, TargetNullValue=''}" FirstDayOfWeek="Monday">
                     <!-- disable date editing, only selection is possible -->
                     <DatePicker.Resources>
                         <Style TargetType="DatePickerTextBox">

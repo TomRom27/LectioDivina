@@ -1,4 +1,7 @@
 ﻿[nowa wersja wymaga zmiany UpgradeCode w projekcie WiXowym!!!]
+1.0.6 2018-11-05
+- zmiana niewidoczna, ale może znacząca: zmiana w OneDayControl
+- DocMake dodany do instalatora
 1.0.5 2016-09-24
 - SmithHtmlEditor używa MSHTML z Windows\System32 (a nie GAC) - kompatybilność z Windows 10
 - mail sender i serwer smtp można konfigurować poprzez userSettings
