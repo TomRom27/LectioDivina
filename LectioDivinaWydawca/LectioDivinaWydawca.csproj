@@ -111,6 +111,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="bookFiles\content.opf" />
+    <None Include="bookFiles\content.xml.opf">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="bookFiles\titlepage.xhtml" />
     <None Include="bookFiles\toc.ncx" />
     <None Include="Lectio Divina szablon.docx" />
@@ -164,6 +167,7 @@
     </Content>
     <Resource Include="bookFiles\cover_image.jpg" />
     <Resource Include="bookFiles\hands.jpg" />
+    <Resource Include="bookFiles\cover_image.template.png" />
     <Content Include="bookFiles\kindlegen.exe" />
     <Content Include="bookFiles\LectioDivina.html" />
     <Resource Include="bookFiles\onjestlogo_withicon.jpg" />

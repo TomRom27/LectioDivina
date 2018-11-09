@@ -109,6 +109,11 @@ namespace LectioDivina.Service
 
         private string GenerateMobiFile()
         {
+            // todo
+            /*
+                         processor.WriteRelativeText(0, ImageTools.ImageProcessor.HorizontalAlignment.center, 30, ImageTools.ImageProcessor.VerticalAlignment.down,
+                                60, new ImageTools.ImageProcessor.RGB(66, 134, 244), "28.11.2018", "xcover_image.jpg");
+             */
             string opfFileName = GetFileWithNamePattern(ebookSourceFilesFolder, "*.opf");
             OnNotification("generuje plik mobi na podstawie pliku " + opfFileName);
 

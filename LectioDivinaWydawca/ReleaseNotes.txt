@@ -1,4 +1,6 @@
 ﻿zamykanie Worda po nieudanych próbach!!!
+1.1.7 2018-11-
+- 
 1.1.6 2018-11-06
 - poprawiony błąd pobierania zbyt wielu dni (2 niedziel tj. także następnej)
 - poprawiony błąd nie-ustawiania dnia w tygodniu przy pobieraniu
