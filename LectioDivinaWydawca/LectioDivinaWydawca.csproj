@@ -110,10 +110,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="bookFiles\content.opf">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="bookFiles\content.xml.opf">
+    <None Include="bookFiles\content.template.opf">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

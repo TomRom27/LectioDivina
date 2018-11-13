@@ -6,10 +6,10 @@
     <dc:description>Modlitwa ze Słowem Bożym</dc:description>
     <dc:contributor opf:role="bkp">http://onjest.pl</dc:contributor>
     <dc:relation>Lectio Divina</dc:relation>
-    <dc:date>1101-01-01T00:00:00+00:00</dc:date>
+    <dc:date>1121-01-01T00:00:00+00:00</dc:date>
 
     <dc:language>pl</dc:language>
-    <meta name="title_sort" content="On Jest - Lectio Divina"/>
+    <meta name="title_sort" content="On Jest - Lectio Divina X"/>
     <meta name="timestamp" content="2016-07-29T14:39:10.309000+00:00"/>
     <meta name="cover" content="cover"/>
     <meta name="author_link_map" content="{&quot;On Jest.&quot;: &quot;&quot;}"/>

@@ -58,6 +58,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="XmlDocumentExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AENetMail\AE.Net.Mail.csproj">

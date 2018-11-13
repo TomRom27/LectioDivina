@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace LectioDivina.Service
 {
@@ -128,19 +129,16 @@ namespace LectioDivina.Service
 
         private string CreateActualCover(DateTime sundayDate)
         {
-            const string coverTemplatePattern = "*cover-image.template.*";
+            const string coverTemplatePattern = "*cover_image.template.*";
             string coverTemplate = GetFileWithNamePattern(ebookSourceFilesFolder, coverTemplatePattern);
 
-            if (String.IsNullOrEmpty(coverTemplate))
-                throw new Exception("Nie można odnaleźć okładki (szukam jako): "+coverTemplatePattern);
-
-            string coverName = coverTemplate.Replace(".template","");
+            string coverName = coverTemplate.Replace(".template", "");
 
             var processor = new ImageTools.ImageProcessor(coverTemplate);
 
 
             processor.WriteRelativeText(0, ImageTools.ImageProcessor.HorizontalAlignment.center, 16, ImageTools.ImageProcessor.VerticalAlignment.down,
-                                            60, 
+                                            60,
                                             new ImageTools.ImageProcessor.RGB(1, 1, 1), Localization.Date2PlStr(sundayDate), coverName);
 
             return coverName;
@@ -149,35 +147,41 @@ namespace LectioDivina.Service
 
         private string CreateActualEbookTemplate(DateTime sundayDate, string coverName)
         {
-            const string opfTemplateNamePattern = "*.xml.opf";
+            const string opfTemplateNamePattern = "*.template.opf";
             string opfTemplateName = GetFileWithNamePattern(ebookSourceFilesFolder, opfTemplateNamePattern);
 
-            if (String.IsNullOrEmpty(opfTemplateName))
-                throw new Exception("Nie można odnaleźć szablonu plik mobi (szukam jako): " + opfTemplateNamePattern);
-
-            var opfTemplateDoc = new System.Xml.XmlDocument();
+            var opfTemplateDoc = new XmlDocument();
             opfTemplateDoc.Load(opfTemplateName);
 
             // add date to title
-            var element = opfTemplateDoc.SelectSingleNode("//dc:title") as System.Xml.XmlElement;
-            if (element != null)
-                element.InnerText = element.InnerText + " - " + Localization.Date2PlStr(sundayDate);
+            XmlElement elem;
+            elem = opfTemplateDoc.SelectFirstNodeByTag("dc:title") as XmlElement;  
+            if (elem != null)
+                elem.InnerText = elem.InnerText + " - " + Localization.Date2PlStr(sundayDate);
 
             // set issue date
-            element = opfTemplateDoc.SelectSingleNode("//dc:date") as System.Xml.XmlElement;
-            if (element != null)
-                element.InnerText = Localization.Date2PlStr(sundayDate);
+            elem = opfTemplateDoc.SelectFirstNodeByTag("dc:date") as XmlElement;
+            if (elem != null)
+                elem.InnerText = sundayDate.ToString("o");
 
-            // set timestamp
-            var attribute = opfTemplateDoc.SelectSingleNode("//meta[@name='timestamp']/@content") as System.Xml.XmlAttribute;
-            if (attribute != null)
-                attribute.Value = Localization.Date2PlStr(sundayDate);
+            // set timestamp, xml path is //meta[@name='timestamp']/@content
+            elem = opfTemplateDoc.SelectFirstElementOfNamedAttribute("meta", "name", "timestamp");
+            if (elem != null)
+                elem.SetAttributeValue("content", sundayDate.ToString("o"));
 
-            string opfName = opfTemplateName.Replace(".xml","");
+            //// set timestamp, xml path is //meta[@name='timestamp']/@content
+            //elem = opfTemplateDoc.SelectFirstElementOfNamedAttribute("meta", "name", "timestamp");
+            //if (elem != null)
+            //    elem.SetAttributeValue("content", sundayDate.ToString("yyyy-MM-dd"));
 
-            opfTemplateDoc.WriteTo(System.Xml.XmlWriter.Create(opfName));
+            string opfName = opfTemplateName.Replace(".template", "");
 
-            return opfTemplateName;
+            using (XmlWriter writer = XmlWriter.Create(opfName, new XmlWriterSettings() { Indent = true }) )
+            {
+                opfTemplateDoc.WriteTo(writer);
+            }
+
+            return opfName;
         }
 
         private bool startCommand(string command, string parameters)
