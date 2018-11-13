@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageTools
+namespace LectioDivina.Service.ImageTools
 {
     public class ImageProcessor : IDisposable
     {

@@ -110,9 +110,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="bookFiles\content.opf" />
+    <None Include="bookFiles\content.opf">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="bookFiles\content.xml.opf">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="bookFiles\titlepage.xhtml" />
     <None Include="bookFiles\toc.ncx" />
@@ -167,7 +170,9 @@
     </Content>
     <Resource Include="bookFiles\cover_image.jpg" />
     <Resource Include="bookFiles\hands.jpg" />
-    <Resource Include="bookFiles\cover_image.template.png" />
+    <Resource Include="bookFiles\cover_image.template.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="bookFiles\kindlegen.exe" />
     <Content Include="bookFiles\LectioDivina.html" />
     <Resource Include="bookFiles\onjestlogo_withicon.jpg" />

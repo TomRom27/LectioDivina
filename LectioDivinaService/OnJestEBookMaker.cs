@@ -30,7 +30,7 @@ namespace LectioDivina.Service
             }
         }
 
-        public string  GenerateEbook()
+        public string GenerateEbook()
         {
             string templateFileName = GetFileWithNamePattern(ebookSourceFilesFolder, "template*.html");
             OnNotification("startuje tworzenie ebooka na podstawie szablonu " + templateFileName);
@@ -73,7 +73,7 @@ namespace LectioDivina.Service
 
             string outputFileName = GetOutputFileName(templateFileName);
             SaveContent(htmlContent, outputFileName);
-            return GenerateMobiFile();
+            return GenerateMobiFile(lectioWeek.Sunday.Day);
         }
 
         private string GetFileWithNamePattern(string path, string filePattern)
@@ -107,14 +107,14 @@ namespace LectioDivina.Service
             System.IO.File.WriteAllText(outputFileName, content);
         }
 
-        private string GenerateMobiFile()
+        private string GenerateMobiFile(DateTime sundayDate)
         {
-            // todo
-            /*
-                         processor.WriteRelativeText(0, ImageTools.ImageProcessor.HorizontalAlignment.center, 30, ImageTools.ImageProcessor.VerticalAlignment.down,
-                                60, new ImageTools.ImageProcessor.RGB(66, 134, 244), "28.11.2018", "xcover_image.jpg");
-             */
-            string opfFileName = GetFileWithNamePattern(ebookSourceFilesFolder, "*.opf");
+            string opfFileName = "";
+
+            OnNotification("przygotowuję szablon i okładkę");
+            var coverFileName = CreateActualCover(sundayDate);
+            opfFileName = CreateActualEbookTemplate(sundayDate, coverFileName);
+
             OnNotification("generuje plik mobi na podstawie pliku " + opfFileName);
 
             opfFileName = EnsureNeededQuatation(opfFileName);
@@ -124,6 +124,60 @@ namespace LectioDivina.Service
                 return null;
 
             //startCommand("cmd", @"/c copy " + ebookSourceFilesFolder + "\\ebook.mobi \"" + ebookOutputFile + "\"");
+        }
+
+        private string CreateActualCover(DateTime sundayDate)
+        {
+            const string coverTemplatePattern = "*cover-image.template.*";
+            string coverTemplate = GetFileWithNamePattern(ebookSourceFilesFolder, coverTemplatePattern);
+
+            if (String.IsNullOrEmpty(coverTemplate))
+                throw new Exception("Nie można odnaleźć okładki (szukam jako): "+coverTemplatePattern);
+
+            string coverName = coverTemplate.Replace(".template","");
+
+            var processor = new ImageTools.ImageProcessor(coverTemplate);
+
+
+            processor.WriteRelativeText(0, ImageTools.ImageProcessor.HorizontalAlignment.center, 16, ImageTools.ImageProcessor.VerticalAlignment.down,
+                                            60, 
+                                            new ImageTools.ImageProcessor.RGB(1, 1, 1), Localization.Date2PlStr(sundayDate), coverName);
+
+            return coverName;
+
+        }
+
+        private string CreateActualEbookTemplate(DateTime sundayDate, string coverName)
+        {
+            const string opfTemplateNamePattern = "*.xml.opf";
+            string opfTemplateName = GetFileWithNamePattern(ebookSourceFilesFolder, opfTemplateNamePattern);
+
+            if (String.IsNullOrEmpty(opfTemplateName))
+                throw new Exception("Nie można odnaleźć szablonu plik mobi (szukam jako): " + opfTemplateNamePattern);
+
+            var opfTemplateDoc = new System.Xml.XmlDocument();
+            opfTemplateDoc.Load(opfTemplateName);
+
+            // add date to title
+            var element = opfTemplateDoc.SelectSingleNode("//dc:title") as System.Xml.XmlElement;
+            if (element != null)
+                element.InnerText = element.InnerText + " - " + Localization.Date2PlStr(sundayDate);
+
+            // set issue date
+            element = opfTemplateDoc.SelectSingleNode("//dc:date") as System.Xml.XmlElement;
+            if (element != null)
+                element.InnerText = Localization.Date2PlStr(sundayDate);
+
+            // set timestamp
+            var attribute = opfTemplateDoc.SelectSingleNode("//meta[@name='timestamp']/@content") as System.Xml.XmlAttribute;
+            if (attribute != null)
+                attribute.Value = Localization.Date2PlStr(sundayDate);
+
+            string opfName = opfTemplateName.Replace(".xml","");
+
+            opfTemplateDoc.WriteTo(System.Xml.XmlWriter.Create(opfName));
+
+            return opfTemplateName;
         }
 
         private bool startCommand(string command, string parameters)
@@ -178,8 +232,8 @@ namespace LectioDivina.Service
             {
                 if (command[0] != '"')
                     command = '"' + command;
-                if (command[command.Length-1] != '"')
-                    command = command+ '"';
+                if (command[command.Length - 1] != '"')
+                    command = command + '"';
 
             }
             return command;
