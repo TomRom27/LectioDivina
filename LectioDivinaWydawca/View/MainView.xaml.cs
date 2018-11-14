@@ -32,12 +32,12 @@ namespace LectioDivina.Wydawca.View
 
         private void AddToStatus(string msg)
         {
-            if (!String.IsNullOrEmpty(LogBox.Text))
-                msg = Environment.NewLine + msg;
+            //if (!String.IsNullOrEmpty(LogBox.Text))
+            //    msg = Environment.NewLine + msg;
 
-            LogBox.AppendText(msg);
-            LogBox.ScrollToEnd();
-            LogBoxScroll.ScrollToEnd();
+            //LogBox.AppendText(msg);
+            //LogBox.ScrollToEnd();
+            //LogBoxScroll.ScrollToEnd();
         }
 
         public void Log(string msg)

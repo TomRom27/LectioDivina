@@ -10,6 +10,18 @@ namespace LectioDivina.Model
 {
     public class LectioDivinaWeek
     {
+        public LectioDivinaWeek()
+        {
+            Sunday = new OneDayContemplation();
+            Monday = new OneDayContemplation();
+            Tuesday= new OneDayContemplation();
+            Wednesday= new OneDayContemplation();
+            Thursday= new OneDayContemplation();
+            Friday= new OneDayContemplation();
+            Saturday = new OneDayContemplation();
+            Title = new TitlePage();
+        }
+
         public TitlePage Title { get; set; }
 
         public OneDayContemplation Sunday { get; set; }

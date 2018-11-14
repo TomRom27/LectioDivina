@@ -1,0 +1,226 @@
+﻿<UserControl x:Class="LectioDivina.Wydawca.View.OneWeekView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ucontrols="clr-namespace:LectioDivina.Controls;assembly=LectioDivinaControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800" Opacity="0.8"
+             d:DataContext="{Binding Main, Source={StaticResource Locator}}">
+    <Grid Background="#FFBFD5E6">
+        <TabControl Background="#FFBFD5E6">
+            <TabItem Name="ControlPanelTab" Header="Panel kontrolny" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Text="LECTIO DIVINA" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Data niedzieli" FontWeight="Bold" />
+                    <DatePicker Name="DayPicker" Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" HorizontalAlignment="Left" SelectedDate="{Binding TitlePage.SundayDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, TargetNullValue=''}" FirstDayOfWeek="Monday">
+                        <!-- disable date editing, only selection is possible -->
+                        <DatePicker.Resources>
+                            <Style TargetType="DatePickerTextBox">
+                                <Setter Property="IsReadOnly" Value="True"/>
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text ="Wezwanie tygodnia" FontWeight="Bold" />
+                    <TextBox Name="WeekInvocationBox" Grid.Column="1" Grid.Row="2" Margin="5,5,0,5" Height="25" Text="{Binding TitlePage.WeekInvocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text ="Opis tygodnia" FontWeight="Bold" />
+                    <TextBox Name="WeekDescriptionBox" Grid.Column="1" Grid.Row="3" Margin="5,5,0,5" Height="25" Text="{Binding TitlePage.WeekDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="4" Text ="Plik szablonu Lectio" FontWeight="Bold" />
+                    <DockPanel Grid.Column="1" Grid.Row="4" LastChildFill="True">
+                        <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectTemplate}"/>
+                        <TextBox Name="LectioTemplateBox" Margin="5,5,0,0" Height="25" DockPanel.Dock="Left" Text="{Binding TitlePage.LectioTemplateFile, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    </DockPanel>
+                    <TextBlock Grid.Column="0" Grid.Row="5" Text ="Katalog dla pliku Lectio" FontWeight="Bold" />
+                    <DockPanel Grid.Column="1" Grid.Row="5" LastChildFill="True">
+                        <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectTarget}"/>
+                        <TextBox Name="LectioTargetBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" Text="{Binding TitlePage.LectioTargetFolder,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    </DockPanel>
+
+                    <DockPanel Grid.Column="1" Grid.Row="6" LastChildFill="True">
+                        <Button Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" ToolTip="Otwórz plik Lectio w Wordzie" Command="{Binding OpenLectioTarget}">
+                            <Image Source="../Images/Word.png"/>
+                        </Button>
+                        <TextBlock Margin="5,0,0,0" Text="{Binding TitlePage.LectioTargetFile}"/>
+                    </DockPanel>
+                    <TextBlock Grid.Column="0" Grid.Row="7" Text ="Katalog plików dla ebook" FontWeight="Bold" />
+                    <StackPanel Grid.Column="1" Grid.Row="7" >
+                        <DockPanel LastChildFill="True">
+                            <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectEbookSource}"/>
+                            <TextBox Name="LectioEbookSourceBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" Text="{Binding TitlePage.LectioEbookSourceFolder,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ToolTip="Wskaż katalog, w którym są pliki szablonu, styli itd. do generowania ebooka" />
+                        </DockPanel>
+                        <TextBlock Margin="5,0,0,0" Text="{Binding TitlePage.LectioEbookTargetFile}"/>
+                    </StackPanel>
+                    <StackPanel Grid.ColumnSpan="2" Grid.Column="0"  Grid.Row="8" Orientation="Horizontal"  >
+                        <RadioButton Content="Brać obrazek bezpośrednio z pliku" Margin="3,0,0,0" IsChecked="{Binding TitlePage.IsPictureFromOwnFile}"/>
+                        <RadioButton Content="Brać obrazek z Rozważań krótkich" Margin="20,0,0,0" IsChecked="{Binding TitlePage.IsPictureFromShortContemplation}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="0" Grid.Row="9" Text ="Plik Rozważań krótkich" FontWeight="Bold" />
+                    <DockPanel Grid.Column="1" Grid.Row="9" LastChildFill="True">
+                        <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectShortContemplation}" IsEnabled="{Binding TitlePage.IsPictureFromShortContemplation}"/>
+                        <TextBox Name="ShortContemplationBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" IsEnabled="{Binding TitlePage.IsPictureFromShortContemplation}" Text="{Binding TitlePage.WeekShortContemplationName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    </DockPanel>
+                    <TextBlock Grid.Column="0" Grid.Row="10" Text ="Plik obrazka" FontWeight="Bold" />
+                    <DockPanel Grid.Column="1" Grid.Row="10" LastChildFill="True">
+                        <Button Content="..." Margin="5,0,0,0" Height="25" Width="25" DockPanel.Dock="Right" Command="{Binding SelectPicture}" IsEnabled="{Binding TitlePage.IsPictureFromOwnFile}"/>
+                        <TextBox Name="WeekPictureBox"  Margin="5,5,0,5" Height="25" DockPanel.Dock="Left" IsEnabled="{Binding TitlePage.IsPictureFromOwnFile}" Text="{Binding TitlePage.WeekPictureName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    </DockPanel>
+                    <StackPanel Grid.ColumnSpan="2" Grid.Column="0"  Grid.Row="11" Orientation="Horizontal" Height="30" HorizontalAlignment="Center">
+                        <Button Name="ClearButton" HorizontalAlignment="Left" Margin="0,0,0,0" Command="{Binding Clear}" >Wyczyść wszystko</Button>
+                        <Button Name="ReceiveButton" HorizontalAlignment="Left" Margin="50,0,0,0" Command="{Binding Receive}">Pobierz</Button>
+                        <Button Name="SaveButton" HorizontalAlignment="Left" Margin="10,0,00,0" Command="{Binding Save}">Zapisz</Button>
+                        <Button Name="CreateTargetButton" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding GenerateLectioTarget}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="../Images/Word.png"/>
+                                <TextBlock Text="Utwórz" Margin="5,0,5,0" VerticalAlignment="Center"></TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Name="SendButton" HorizontalAlignment="Left" Margin="50,0,0,0" Command="{Binding Send}">Wyślij</Button>
+                        <Button Name="CloseButton" HorizontalAlignment="Right" Margin="50,0,0,0"  Command="{Binding CloseApp}" >Zamknij</Button>
+                    </StackPanel>
+                    <ScrollViewer Name="LogBoxScroll" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="12" VerticalScrollBarVisibility="Auto" Margin="0,5,0,0" >
+                        <TextBox Name="LogBox" IsEnabled="False" MinHeight="170"/>
+                    </ScrollViewer>
+                </Grid>
+
+            </TabItem>
+            <TabItem Name="SundayTab" Header="Niedziela" >
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ucontrols:OneDayControl
+                                                 Day="{Binding Sunday.Day, Mode=TwoWay}"
+                                                 DayDescription="{Binding Sunday.DayDescription, Mode=TwoWay}"
+                                                 DayTitle="{Binding Sunday.Title, Mode=TwoWay}"
+                                                 ReadingRef="{Binding Sunday.ReadingReference, Mode=TwoWay}"
+                                                 ReadingText="{Binding Sunday.ReadingText, Mode=TwoWay}"
+                                                 Contemplation1="{Binding Sunday.Contemplation1, Mode=TwoWay}"
+                                                 Contemplation2="{Binding Sunday.Contemplation2, Mode=TwoWay}"
+                                                 Contemplation3="{Binding Sunday.Contemplation3, Mode=TwoWay}"
+                                                 Contemplation4="{Binding Sunday.Contemplation4, Mode=TwoWay}"
+                                                 Contemplation5="{Binding Sunday.Contemplation5, Mode=TwoWay}"
+                                                 Contemplation6="{Binding Sunday.Contemplation6, Mode=TwoWay}"
+                                                 Prayer="{Binding Sunday.Prayer, Mode=TwoWay}"/>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Name="MondayTab" Header="Poniedziałek" >
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ucontrols:OneDayControl
+                                                 Day="{Binding Monday.Day, Mode=TwoWay}"
+                                                 DayDescription="{Binding Monday.DayDescription, Mode=TwoWay}"
+                                                 DayTitle="{Binding Monday.Title, Mode=TwoWay}"
+                                                 ReadingRef="{Binding Monday.ReadingReference, Mode=TwoWay}"
+                                                 ReadingText="{Binding Monday.ReadingText, Mode=TwoWay}"
+                                                 Contemplation1="{Binding Monday.Contemplation1, Mode=TwoWay}"
+                                                 Contemplation2="{Binding Monday.Contemplation2, Mode=TwoWay}"
+                                                 Contemplation3="{Binding Monday.Contemplation3, Mode=TwoWay}"
+                                                 Contemplation4="{Binding Monday.Contemplation4, Mode=TwoWay}"
+                                                 Contemplation5="{Binding Monday.Contemplation5, Mode=TwoWay}"
+                                                 Contemplation6="{Binding Monday.Contemplation6, Mode=TwoWay}"
+                                                 Prayer="{Binding Monday.Prayer, Mode=TwoWay}"/>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Name="TuesdayTab" Header="Wtorek" >
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ucontrols:OneDayControl
+                                                 Day="{Binding Tuesday.Day, Mode=TwoWay}"
+                                                 DayDescription="{Binding Tuesday.DayDescription, Mode=TwoWay}"
+                                                 DayTitle="{Binding Tuesday.Title, Mode=TwoWay}"
+                                                 ReadingRef="{Binding Tuesday.ReadingReference, Mode=TwoWay}"
+                                                 ReadingText="{Binding Tuesday.ReadingText, Mode=TwoWay}"
+                                                 Contemplation1="{Binding Tuesday.Contemplation1, Mode=TwoWay}"
+                                                 Contemplation2="{Binding Tuesday.Contemplation2, Mode=TwoWay}"
+                                                 Contemplation3="{Binding Tuesday.Contemplation3, Mode=TwoWay}"
+                                                 Contemplation4="{Binding Tuesday.Contemplation4, Mode=TwoWay}"
+                                                 Contemplation5="{Binding Tuesday.Contemplation5, Mode=TwoWay}"
+                                                 Contemplation6="{Binding Tuesday.Contemplation6, Mode=TwoWay}"
+                                                 Prayer="{Binding Tuesday.Prayer, Mode=TwoWay}"/>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Name="WednesdayTab" Header="Środa" >
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ucontrols:OneDayControl
+                                                 Day="{Binding Wednesday.Day, Mode=TwoWay}"
+                                                 DayDescription="{Binding Wednesday.DayDescription, Mode=TwoWay}"
+                                                 DayTitle="{Binding Wednesday.Title, Mode=TwoWay}"
+                                                 ReadingRef="{Binding Wednesday.ReadingReference, Mode=TwoWay}"
+                                                 ReadingText="{Binding Wednesday.ReadingText, Mode=TwoWay}"
+                                                 Contemplation1="{Binding Wednesday.Contemplation1, Mode=TwoWay}"
+                                                 Contemplation2="{Binding Wednesday.Contemplation2, Mode=TwoWay}"
+                                                 Contemplation3="{Binding Wednesday.Contemplation3, Mode=TwoWay}"
+                                                 Contemplation4="{Binding Wednesday.Contemplation4, Mode=TwoWay}"
+                                                 Contemplation5="{Binding Wednesday.Contemplation5, Mode=TwoWay}"
+                                                 Contemplation6="{Binding Wednesday.Contemplation6, Mode=TwoWay}"
+                                                 Prayer="{Binding Wednesday.Prayer, Mode=TwoWay}"/>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Name="ThursdayTab" Header="Czwartek" >
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ucontrols:OneDayControl
+                                                 Day="{Binding Thursday.Day, Mode=TwoWay}"
+                                                 DayDescription="{Binding Thursday.DayDescription, Mode=TwoWay}"
+                                                 DayTitle="{Binding Thursday.Title, Mode=TwoWay}"
+                                                 ReadingRef="{Binding Thursday.ReadingReference, Mode=TwoWay}"
+                                                 ReadingText="{Binding Thursday.ReadingText, Mode=TwoWay}"
+                                                 Contemplation1="{Binding Thursday.Contemplation1, Mode=TwoWay}"
+                                                 Contemplation2="{Binding Thursday.Contemplation2, Mode=TwoWay}"
+                                                 Contemplation3="{Binding Thursday.Contemplation3, Mode=TwoWay}"
+                                                 Contemplation4="{Binding Thursday.Contemplation4, Mode=TwoWay}"
+                                                 Contemplation5="{Binding Thursday.Contemplation5, Mode=TwoWay}"
+                                                 Contemplation6="{Binding Thursday.Contemplation6, Mode=TwoWay}"
+                                                 Prayer="{Binding Thursday.Prayer, Mode=TwoWay}"/>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Name="FridayTab" Header="Piątek" >
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ucontrols:OneDayControl
+                                                 Day="{Binding Friday.Day, Mode=TwoWay}"
+                                                 DayDescription="{Binding Friday.DayDescription, Mode=TwoWay}"
+                                                 DayTitle="{Binding Friday.Title, Mode=TwoWay}"
+                                                 ReadingRef="{Binding Friday.ReadingReference, Mode=TwoWay}"
+                                                 ReadingText="{Binding Friday.ReadingText, Mode=TwoWay}"
+                                                 Contemplation1="{Binding Friday.Contemplation1, Mode=TwoWay}"
+                                                 Contemplation2="{Binding Friday.Contemplation2, Mode=TwoWay}"
+                                                 Contemplation3="{Binding Friday.Contemplation3, Mode=TwoWay}"
+                                                 Contemplation4="{Binding Friday.Contemplation4, Mode=TwoWay}"
+                                                 Contemplation5="{Binding Friday.Contemplation5, Mode=TwoWay}"
+                                                 Contemplation6="{Binding Friday.Contemplation6, Mode=TwoWay}"
+                                                 Prayer="{Binding Friday.Prayer, Mode=TwoWay}"/>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Name="SaturdayTab" Header="Sobota" >
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ucontrols:OneDayControl
+                                                 Day="{Binding Saturday.Day, Mode=TwoWay}"
+                                                 DayDescription="{Binding Saturday.DayDescription, Mode=TwoWay}"
+                                                 DayTitle="{Binding Saturday.Title, Mode=TwoWay}"
+                                                 ReadingRef="{Binding Saturday.ReadingReference, Mode=TwoWay}"
+                                                 ReadingText="{Binding Saturday.ReadingText, Mode=TwoWay}"
+                                                 Contemplation1="{Binding Saturday.Contemplation1, Mode=TwoWay}"
+                                                 Contemplation2="{Binding Saturday.Contemplation2, Mode=TwoWay}"
+                                                 Contemplation3="{Binding Saturday.Contemplation3, Mode=TwoWay}"
+                                                 Contemplation4="{Binding Saturday.Contemplation4, Mode=TwoWay}"
+                                                 Contemplation5="{Binding Saturday.Contemplation5, Mode=TwoWay}"
+                                                 Contemplation6="{Binding Saturday.Contemplation6, Mode=TwoWay}"
+                                                 Prayer="{Binding Saturday.Prayer, Mode=TwoWay}"/>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

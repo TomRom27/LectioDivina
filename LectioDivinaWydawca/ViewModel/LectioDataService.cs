@@ -7,24 +7,27 @@ using System.Text;
 
 using System.Threading.Tasks;
 using LectioDivina.Model;
+using LectioDivina.Wydawca.Model;
 
 namespace LectioDivina.Wydawca.ViewModel
 {
     public interface ILectioDataService
     {
         LectioDivinaWeek Load();
-        LectioDivinaWeek GetEmpty();
+        LectioDivinaMultiWeek LoadMulti();
+
         void Save(LectioDivinaWeek lectioDivina);
 
         DateTime GetNearestSunday();
         string ProposeLectioTargetName(string folder, string weekInvocation, string weekDescription);
+
     }
 
     public class LectioDataService : ILectioDataService
     {
         public const string AppDataSubfolder = "LectioDivina";
-        public const string DataFilename = "LectioDivina.xml";
-
+        public const string LectioDataFilename = "LectioDivina.xml";
+        public const string MultiLectioFilename = "MultiLectioDivina.xml";
 
         public string ProposeLectioTargetName(string folder, string weekInvocation, string weekDescription)
         {
@@ -43,7 +46,7 @@ namespace LectioDivina.Wydawca.ViewModel
             {
                 EnsureDataFolder();
 
-                using (var sr = new StreamReader(GetLocalFileName()))
+                using (var sr = new StreamReader(GetLectioFileName()))
                 {
                     var s = sr.ReadToEnd();
                     lectioDivina = SerializationHelper.Deserialize<LectioDivinaWeek>(s);
@@ -57,6 +60,32 @@ namespace LectioDivina.Wydawca.ViewModel
             return lectioDivina;
         }
 
+
+        public LectioDivinaMultiWeek LoadMulti()
+        {
+            LectioDivinaMultiWeek multiLectioDivina;
+
+            try
+            {
+                EnsureDataFolder();
+
+                using (var sr = new StreamReader(GetMultiLectioFileName()))
+                {
+                    var s = sr.ReadToEnd();
+                    multiLectioDivina = SerializationHelper.Deserialize<LectioDivinaMultiWeek>(s);
+                }
+            }
+            catch (Exception)
+            {
+                multiLectioDivina = new LectioDivinaMultiWeek();
+                // we load one week - as a migration from previous data
+                LectioDivinaWeek oneWeek = Load();
+                multiLectioDivina.Weeks.Add(new IdWeek() { Week = oneWeek });
+            }
+
+            return multiLectioDivina;
+        }
+
         public void Save(LectioDivinaWeek lectioDivina)
         {
             string xml;
@@ -64,7 +93,7 @@ namespace LectioDivina.Wydawca.ViewModel
             EnsureDataFolder();
 
             xml = SerializationHelper.Serialize(lectioDivina);
-            using (var sw = new System.IO.StreamWriter(GetLocalFileName()))
+            using (var sw = new System.IO.StreamWriter(GetLectioFileName()))
             {
                 sw.WriteLine(xml);
             }
@@ -83,7 +112,7 @@ namespace LectioDivina.Wydawca.ViewModel
             return day;
         }
 
-        public LectioDivinaWeek GetEmpty()
+        private LectioDivinaWeek GetEmpty()
         {
             LectioDivinaWeek lectioDivina = new LectioDivinaWeek();
 
@@ -105,6 +134,7 @@ namespace LectioDivina.Wydawca.ViewModel
 
             return lectioDivina;
         }
+
 
         private OneDayContemplation GetEmptyContemplation()
         {
@@ -132,14 +162,19 @@ namespace LectioDivina.Wydawca.ViewModel
             if (!Directory.Exists(GetDataFolderName()))
                 Directory.CreateDirectory(GetDataFolderName());
         }
-        private string GetLocalFileName()
+        private string GetLectioFileName()
         {
-            return Path.Combine(GetDataFolderName(), DataFilename);
+            return Path.Combine(GetDataFolderName(), LectioDataFilename);
+        }
+        private string GetMultiLectioFileName()
+        {
+            return Path.Combine(GetDataFolderName(), MultiLectioFilename);
         }
 
         private string GetDataFolderName()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), AppDataSubfolder);
         }
+
     }
 }

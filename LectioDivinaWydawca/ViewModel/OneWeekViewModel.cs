@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -16,49 +16,49 @@ using LectioDivinaWydawca;
 using LectioDivina.Wydawca.Model;
 
 using MvvmLight.Extensions;
-using System.Collections.ObjectModel;
 
 namespace LectioDivina.Wydawca.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class OneWeekViewModel : ViewModelBase
     {
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         /// 
-        private LectioDivinaMultiWeek multiWeek;
         private LectioDivinaWeek lectioDivinaWeek;
         private ILectioDataService dataService;
         private IDialogService dialogService;
         private bool isDirty;
+        private long id;
 
-        public MainViewModel(ILectioDataService dataService, IDialogService dialogService)
+        public OneWeekViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+
+        }
+
+        public OneWeekViewModel(ILectioDataService dataService, IDialogService dialogService)
+        {
             this.dataService = dataService;
             this.dialogService = dialogService;
             //this.loggingService = loggingService;
 
             CreateCommands();
+            lectioDivinaWeek = dataService.Load();
+            this.id = DateTime.Now.Ticks;
+            InitiateData();
+        }
+
+        public OneWeekViewModel(ILectioDataService dataService, IDialogService dialogService, IdWeek weekData)
+        {
+            this.dataService = dataService;
+            this.dialogService = dialogService;
+            //this.loggingService = loggingService;
+
+            CreateCommands();
+
+            this.lectioDivinaWeek = weekData.Week;
+            this.id = weekData.Id;
             InitiateData();
         }
 
@@ -67,17 +67,9 @@ namespace LectioDivina.Wydawca.ViewModel
             if (LoggingService != null)
                 LoggingService.Log(msg);
         }
+
         private void InitiateData()
         {
-            multiWeek = dataService.LoadMulti();
-
-            Weeks = new ObservableCollection<OneWeekViewModel>();
-            foreach (var w in multiWeek.Weeks)
-                Weeks.Add(new OneWeekViewModel(dataService, dialogService, w));
-
-
-            lectioDivinaWeek = dataService.Load();
-
             TitlePage = new TitlePageVM(lectioDivinaWeek.Title);
 
             Sunday = new OneDayContemplationVM(lectioDivinaWeek.Sunday);
@@ -96,14 +88,6 @@ namespace LectioDivina.Wydawca.ViewModel
         public ILoggingService LoggingService { get; set; }
 
         #region VM properties
-        private ObservableCollection<OneWeekViewModel> weeks;
-        public ObservableCollection<OneWeekViewModel> Weeks
-        {
-            get { return this.weeks; }
-            set { this.weeks = value; }
-        }
-
-        #region
         private TitlePageVM titlePage;
         public TitlePageVM TitlePage
         {
@@ -239,12 +223,8 @@ namespace LectioDivina.Wydawca.ViewModel
                 }
             }
         }
-        #endregion
+
         #region Commands
-
-        public RelayCommand AddWeek { get; set; }
-        public RelayCommand Remove { get; set; }
-
         public RelayCommand Save { get; set; }
         public RelayCommand Send { get; set; }
         public RelayCommand Receive { get; set; }
@@ -264,16 +244,11 @@ namespace LectioDivina.Wydawca.ViewModel
 
         private void CreateCommands()
         {
-            AddWeek = new RelayCommand(AddOneWeek);
-
-            CloseApp = new RelayCommand(Close);
-
-
             Save = new RelayCommand(SaveLectio);
             Send = new RelayCommand(SendLectioToServer);
             Receive = new RelayCommand(ReceiveLectiosFromServer);
             Clear = new RelayCommand(ClearLectio);
-
+            CloseApp = new RelayCommand(Close);
             OpenLectioTarget = new RelayCommand(OpenLectioTargetInWord);
             GenerateLectioTarget = new RelayCommand(GenerateLectioTargetDoc);
             SelectTemplate = new RelayCommand(SelectLectioTemplate);
@@ -283,17 +258,9 @@ namespace LectioDivina.Wydawca.ViewModel
             SelectShortContemplation = new RelayCommand(SelectShortContemplationFile);
         }
 
-        private void AddOneWeek()
-        {
-            var newWeekVM = new OneWeekViewModel(this.dataService, this.dialogService, new IdWeek() { Week = new LectioDivinaWeek() });
-            newWeekVM.TitlePage.WeekDescription = "<nowy tydzieñ>";
-            Weeks.Add(newWeekVM);
-            // todo
-        }
-
         private void SelectShortContemplationFile()
         {
-            string template = dialogService.SelectFile("Wybierz pliku Rozwa¿añ krótkich", "*.doc;*.docx");
+            string template = dialogService.SelectFile("Wybierz pliku RozwaÅ¼aÅ„ krÃ³tkich", "*.doc;*.docx");
 
             if (!String.IsNullOrEmpty(template))
                 TitlePage.WeekShortContemplationName = template;
@@ -301,7 +268,7 @@ namespace LectioDivina.Wydawca.ViewModel
 
         private void SelectPictureFile()
         {
-            string picture = dialogService.SelectFile("Wybierz obrazek do bie¿¹cego Lectio Divina", "*.jpg;*.png");
+            string picture = dialogService.SelectFile("Wybierz obrazek do bieÅ¼Ä…cego Lectio Divina", "*.jpg;*.png");
 
             if (!String.IsNullOrEmpty(picture))
                 TitlePage.WeekPictureName = picture;
@@ -317,7 +284,7 @@ namespace LectioDivina.Wydawca.ViewModel
 
         private void SelectLectioTarget()
         {
-            string folder = dialogService.SelectFolder("Wybierz katalog, w którym umieszczony zostanie bie¿¹cy plik Lectio Divina", TitlePage.LectioTargetFolder);
+            string folder = dialogService.SelectFolder("Wybierz katalog, w ktÃ³rym umieszczony zostanie bieÅ¼Ä…cy plik Lectio Divina", TitlePage.LectioTargetFolder);
             if (!String.IsNullOrEmpty(folder))
                 TitlePage.LectioTargetFolder = folder;
         }
@@ -342,9 +309,9 @@ namespace LectioDivina.Wydawca.ViewModel
             }
             catch (Exception ex)
             {
-                string msg = "Nie uda³o siê otworzyæ Lectio:\r\n" + ex.Message;
+                string msg = "Nie udaÅ‚o siÄ™ otworzyÄ‡ Lectio:\r\n" + ex.Message;
                 Log(msg);
-                dialogService.ShowError(msg, "B³¹d", "OK", null);
+                dialogService.ShowError(msg, "BÅ‚Ä…d", "OK", null);
             }
         }
 
@@ -363,7 +330,7 @@ namespace LectioDivina.Wydawca.ViewModel
                 {
                     Log("Braki w Lectio\r\n" + issues.Aggregate((a, b) => a + "\r\n" + b));
 
-                    dialogService.ShowMessage("W rozwa¿aniach s¹ braki. Tworzyæ Lectio mimo wszystko?",
+                    dialogService.ShowMessage("W rozwaÅ¼aniach sÄ… braki. TworzyÄ‡ Lectio mimo wszystko?",
                                             "Potwierdzenie",
                                             buttonConfirmText: "Tak", buttonCancelText: "Nie",
                                             afterHideCallback: (confirmed) =>
@@ -372,7 +339,7 @@ namespace LectioDivina.Wydawca.ViewModel
                                                     GenerateLectio();
                                                 else
                                                 {
-                                                    Log("Lectio nie zosta³o utworzone ze wzglêdu na braki.");
+                                                    Log("Lectio nie zostaÅ‚o utworzone ze wzglÄ™du na braki.");
                                                     showFinishInfo = false;
                                                     return;
                                                 }
@@ -390,14 +357,14 @@ namespace LectioDivina.Wydawca.ViewModel
                 dialogService.SetNormal();
                 if (t.Exception != null)
                 {
-                    string msg = "Nie uda³o siê utworzyæ Lectio:\r\n" + t.Exception.InnerException.Message;
+                    string msg = "Nie udaÅ‚o siÄ™ utworzyÄ‡ Lectio:\r\n" + t.Exception.InnerException.Message;
                     Log(msg);
-                    dialogService.ShowError(msg, "B³¹d", "OK", null);
+                    dialogService.ShowError(msg, "BÅ‚Ä…d", "OK", null);
                 }
                 else if (showFinishInfo)
                 {
-                    Log("Zakoñczono tworzenie Lectio");
-                    dialogService.ShowMessage("Zakoñczono tworzenie Lectio", "Informacja");
+                    Log("ZakoÅ„czono tworzenie Lectio");
+                    dialogService.ShowMessage("ZakoÅ„czono tworzenie Lectio", "Informacja");
                 }
             }, CancellationToken.None, TaskContinuationOptions.None, scheduler);
 
@@ -406,7 +373,7 @@ namespace LectioDivina.Wydawca.ViewModel
         private void GenerateLectio()
         {
             dialogService.SetBusy();
-            Log("Rozpoczêto tworzenie Lectio. Czekaj...");
+            Log("RozpoczÄ™to tworzenie Lectio. Czekaj...");
 
             if (TitlePage.IsPictureFromShortContemplation)
                 ExtractPictureFromShortContemplation();
@@ -424,7 +391,7 @@ namespace LectioDivina.Wydawca.ViewModel
             catch (Exception exception)
             {
                 TitlePage.LectioEbookTargetFile = "";
-                Log("B³¹d podczas generowania ebook-a\r\n" + exception.Message);
+                Log("BÅ‚Ä…d podczas generowania ebook-a\r\n" + exception.Message);
             }
 
             var lectioGenerator = new LectioDivinaGenerator();
@@ -445,7 +412,7 @@ namespace LectioDivina.Wydawca.ViewModel
         {
             if (IsDirty)
             {
-                dialogService.ShowMessage("Rozwa¿ania by³y zmienione. Zapisaæ przed zakoñczeniem?",
+                dialogService.ShowMessage("RozwaÅ¼ania byÅ‚y zmienione. ZapisaÄ‡ przed zakoÅ„czeniem?",
                     "Potwierdzenie",
                     buttonConfirmText: "Tak", buttonCancelText: "Nie",
                     afterHideCallback: (confirmed) =>
@@ -461,7 +428,7 @@ namespace LectioDivina.Wydawca.ViewModel
 
         private void ClearLectio()
         {
-            dialogService.ShowMessage("Wyczyœciæ wszystkie pola?",
+            dialogService.ShowMessage("WyczyÅ›ciÄ‡ wszystkie pola?",
                 "Uwaga",
                 buttonConfirmText: "Tak", buttonCancelText: "Nie",
                 afterHideCallback: (confirmed) =>
@@ -494,7 +461,7 @@ namespace LectioDivina.Wydawca.ViewModel
                 {
                     Log("Braki w Lectio\r\n" + issues.Aggregate((a, b) => a + "\r\n" + b));
 
-                    dialogService.ShowMessage("W rozwa¿aniach s¹ braki. Wys³aæ Lectio mimo wszystko?",
+                    dialogService.ShowMessage("W rozwaÅ¼aniach sÄ… braki. WysÅ‚aÄ‡ Lectio mimo wszystko?",
                                             "Potwierdzenie",
                                             buttonConfirmText: "Tak", buttonCancelText: "Nie",
                                             afterHideCallback: (confirmed) =>
@@ -503,7 +470,7 @@ namespace LectioDivina.Wydawca.ViewModel
                                                     SendLectio();
                                                 else
                                                 {
-                                                    Log("Lectio nie zosta³o wys³ane ze wzglêdu na braki.");
+                                                    Log("Lectio nie zostaÅ‚o wysÅ‚ane ze wzglÄ™du na braki.");
                                                     return;
                                                 }
 
@@ -519,14 +486,14 @@ namespace LectioDivina.Wydawca.ViewModel
             {
                 if (t.Exception != null)
                 {
-                    string msg = "Coœ posz³o Ÿle przy wysy³aniu Lectio:\r\n" + t.Exception.InnerException.Message;
+                    string msg = "CoÅ› poszÅ‚o Åºle przy wysyÅ‚aniu Lectio:\r\n" + t.Exception.InnerException.Message;
                     Log(msg);
-                    dialogService.ShowError(msg, "B³¹d", "OK", null);
+                    dialogService.ShowError(msg, "BÅ‚Ä…d", "OK", null);
                 }
                 else
                 {
-                    Log("Zakoñczono wysy³anie Lectio");
-                    dialogService.ShowMessage("Zakoñczono wysy³anie Lectio", "Informacja");
+                    Log("ZakoÅ„czono wysyÅ‚anie Lectio");
+                    dialogService.ShowMessage("ZakoÅ„czono wysyÅ‚anie Lectio", "Informacja");
                 }
             });
         }
@@ -547,7 +514,7 @@ namespace LectioDivina.Wydawca.ViewModel
             System.Threading.Tasks.Task.Factory
                 .StartNew(() =>
                 {
-                    Log("Odbieram  z serwera Lectio od autorów");
+                    Log("Odbieram  z serwera Lectio od autorÃ³w");
                     MailTransport transport = new MailTransport();
                     transport.Notification += Progress_Notification;
                     List<OneDayContemplation> contemplations = null;
@@ -573,14 +540,14 @@ namespace LectioDivina.Wydawca.ViewModel
                 {
                     if (t.Exception != null)
                     {
-                        string msg = "Nie uda³o siê odebraæ Lectio:\r\n" + t.Exception.InnerException.Message;
+                        string msg = "Nie udaÅ‚o siÄ™ odebraÄ‡ Lectio:\r\n" + t.Exception.InnerException.Message;
                         Log(msg);
-                        dialogService.ShowError(msg, "B³¹d", "OK", null);
+                        dialogService.ShowError(msg, "BÅ‚Ä…d", "OK", null);
                     }
                     else
                     {
-                        Log(String.Format("Odebrano {0} rozwa¿añ", count));
-                        dialogService.ShowMessage(String.Format("Zakoñczono odbieranie Lectio, odebrano {0}. ", count), "Informacja");
+                        Log(String.Format("Odebrano {0} rozwaÅ¼aÅ„", count));
+                        dialogService.ShowMessage(String.Format("ZakoÅ„czono odbieranie Lectio, odebrano {0}. ", count), "Informacja");
                     }
                 }
                 );
@@ -626,9 +593,9 @@ namespace LectioDivina.Wydawca.ViewModel
             }
             catch (Exception ex)
             {
-                string msg = "Nie uda³o siê zapisaæ Lectio:\r\n" + ex.Message;
+                string msg = "Nie udaÅ‚o siÄ™ zapisaÄ‡ Lectio:\r\n" + ex.Message;
                 Log(msg);
-                dialogService.ShowError(msg, "B³¹d", "OK", null);
+                dialogService.ShowError(msg, "BÅ‚Ä…d", "OK", null);
             }
         }
 
@@ -641,8 +608,8 @@ namespace LectioDivina.Wydawca.ViewModel
             if (String.IsNullOrEmpty(TitlePage.WeekPictureName))
                 TitlePage.WeekPictureName = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(TitlePage.WeekShortContemplationName),
                                             "obrazek.jpg");
-            Log("Biorê obrazek z " + TitlePage.WeekShortContemplationName);
-            Log("zapisujê jako " + TitlePage.WeekPictureName);
+            Log("BiorÄ™ obrazek z " + TitlePage.WeekShortContemplationName);
+            Log("zapisujÄ™ jako " + TitlePage.WeekPictureName);
 
             WordDocument word = new WordDocument();
             word.Open(TitlePage.WeekShortContemplationName, false);

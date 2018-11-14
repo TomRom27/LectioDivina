@@ -9,6 +9,10 @@ namespace LectioDivina.Model
 {
     public class TitlePage 
     {
+        public TitlePage()
+        {
+            LectioTargetFolder = "";
+        }
 
         public DateTime SundayDate { get; set; }
 
