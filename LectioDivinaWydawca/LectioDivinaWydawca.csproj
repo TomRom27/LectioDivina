@@ -68,6 +68,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\LectioDivinaMultiWeek.cs" />
     <Compile Include="Model\IdWeek.cs" />
+    <Compile Include="Notification\RemoveWeek.cs" />
     <Compile Include="ViewModel\ILoggingService.cs" />
     <Compile Include="ViewModel\LectioDataService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

@@ -17,6 +17,7 @@ using LectioDivina.Wydawca.Model;
 
 using MvvmLight.Extensions;
 
+
 namespace LectioDivina.Wydawca.ViewModel
 {
     public class OneWeekViewModel : ViewModelBase
@@ -30,7 +31,7 @@ namespace LectioDivina.Wydawca.ViewModel
         private ILectioDataService dataService;
         private IDialogService dialogService;
         private bool isDirty;
-        private long id;
+
 
         public OneWeekViewModel()
         {
@@ -45,7 +46,7 @@ namespace LectioDivina.Wydawca.ViewModel
 
             CreateCommands();
             lectioDivinaWeek = dataService.Load();
-            this.id = DateTime.Now.Ticks;
+            Id = DateTime.Now.Ticks;
             InitiateData();
         }
 
@@ -58,7 +59,7 @@ namespace LectioDivina.Wydawca.ViewModel
             CreateCommands();
 
             this.lectioDivinaWeek = weekData.Week;
-            this.id = weekData.Id;
+            Id = weekData.Id;
             InitiateData();
         }
 
@@ -88,6 +89,8 @@ namespace LectioDivina.Wydawca.ViewModel
         public ILoggingService LoggingService { get; set; }
 
         #region VM properties
+        public long Id { get; private set; }
+
         private TitlePageVM titlePage;
         public TitlePageVM TitlePage
         {
@@ -238,6 +241,7 @@ namespace LectioDivina.Wydawca.ViewModel
         public RelayCommand SelectPicture { get; set; }
         public RelayCommand SelectShortContemplation { get; set; }
 
+        public RelayCommand Remove { get; set; }
         #endregion
 
         #region private methods
@@ -256,6 +260,21 @@ namespace LectioDivina.Wydawca.ViewModel
             SelectEbookSource = new RelayCommand(SelectLectioEbookSource);
             SelectPicture = new RelayCommand(SelectPictureFile);
             SelectShortContemplation = new RelayCommand(SelectShortContemplationFile);
+            Remove = new RelayCommand(RemoveThisWeek);
+        }
+
+        private void RemoveThisWeek()
+        {
+            dialogService.ShowMessage("Usunąć tydzień "+this.TitlePage.WeekDescription+" ?",
+                "Uwaga",
+                buttonConfirmText: "Tak", buttonCancelText: "Nie",
+                afterHideCallback: (confirmed) =>
+                {
+                    if (confirmed)
+                    {
+                        MessengerInstance.Send<Notification.RemoveWeekMessage>(new Notification.RemoveWeekMessage(Id));
+                    }
+                });
         }
 
         private void SelectShortContemplationFile()
