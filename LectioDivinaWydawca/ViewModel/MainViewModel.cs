@@ -78,6 +78,22 @@ namespace LectioDivina.Wydawca.ViewModel
             get { return System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString(4); }
         }
 
+        private OneWeekViewModel selectedWeek;
+        public OneWeekViewModel SelectedWeek
+        {
+            get
+            {
+                return selectedWeek;
+            }
+            set
+            {
+                if (selectedWeek != null)
+                    selectedWeek.IsSelectedL = false;
+                selectedWeek = value;
+                selectedWeek.IsSelectedL = true;
+            }
+        }
+
         private bool IsDirty
         {
             get
