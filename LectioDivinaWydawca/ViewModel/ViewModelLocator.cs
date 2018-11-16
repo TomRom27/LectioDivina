@@ -49,7 +49,6 @@ namespace LectioDivina.Wydawca.ViewModel
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<MvvmLight.Extensions.IDialogService, MvvmLight.Extensions.Wpf.DialogService>();
-            SimpleIoc.Default.Register<ILoggingService, View.MainView>();
         }
 
         public MainViewModel Main

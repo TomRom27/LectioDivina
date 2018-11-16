@@ -27,7 +27,7 @@ namespace LectioDivina.Wydawca.ViewModel
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         /// 
-        private LectioDivinaWeek lectioDivinaWeek;
+        //private LectioDivinaWeek lectioDivinaWeek;
         private ILectioDataService dataService;
         private IDialogService dialogService;
         private bool isDirty;
@@ -45,7 +45,7 @@ namespace LectioDivina.Wydawca.ViewModel
             //this.loggingService = loggingService;
 
             CreateCommands();
-            lectioDivinaWeek = dataService.Load();
+            LectioWeek = dataService.Load();
             Id = DateTime.Now.Ticks;
             InitiateData();
         }
@@ -58,37 +58,33 @@ namespace LectioDivina.Wydawca.ViewModel
 
             CreateCommands();
 
-            this.lectioDivinaWeek = weekData.Week;
+            LectioWeek = weekData.Week;
             Id = weekData.Id;
             InitiateData();
         }
 
-        private void Log(string msg)
-        {
-            if (LoggingService != null)
-                LoggingService.Log(msg);
-        }
-
         private void InitiateData()
         {
-            TitlePage = new TitlePageVM(lectioDivinaWeek.Title);
+            TitlePage = new TitlePageVM(LectioWeek.Title);
 
-            Sunday = new OneDayContemplationVM(lectioDivinaWeek.Sunday);
-            Monday = new OneDayContemplationVM(lectioDivinaWeek.Monday);
-            Tuesday = new OneDayContemplationVM(lectioDivinaWeek.Tuesday);
-            Wednesday = new OneDayContemplationVM(lectioDivinaWeek.Wednesday);
-            Thursday = new OneDayContemplationVM(lectioDivinaWeek.Thursday);
-            Friday = new OneDayContemplationVM(lectioDivinaWeek.Friday);
-            Saturday = new OneDayContemplationVM(lectioDivinaWeek.Saturday);
+            Sunday = new OneDayContemplationVM(LectioWeek.Sunday);
+            Monday = new OneDayContemplationVM(LectioWeek.Monday);
+            Tuesday = new OneDayContemplationVM(LectioWeek.Tuesday);
+            Wednesday = new OneDayContemplationVM(LectioWeek.Wednesday);
+            Thursday = new OneDayContemplationVM(LectioWeek.Thursday);
+            Friday = new OneDayContemplationVM(LectioWeek.Friday);
+            Saturday = new OneDayContemplationVM(LectioWeek.Saturday);
 
             RefreshTargetFileProperty();
 
             IsDirty = false;
         }
 
-        public ILoggingService LoggingService { get; set; }
+        public string Logs { get; set; }
 
         #region VM properties
+        public LectioDivinaWeek LectioWeek { get; private set; }
+
         public long Id { get; private set; }
 
         private TitlePageVM titlePage;
@@ -115,6 +111,7 @@ namespace LectioDivina.Wydawca.ViewModel
             }
         }
 
+        #region week days objects
         private OneDayContemplationVM sunday;
         public OneDayContemplationVM Sunday
         {
@@ -205,7 +202,7 @@ namespace LectioDivina.Wydawca.ViewModel
                 saturday.PropertyChanged += oneDay_PropertyChanged;
             }
         }
-
+        #endregion // week days objects
 
         void oneDay_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -227,11 +224,12 @@ namespace LectioDivina.Wydawca.ViewModel
             }
         }
 
+
         #region Commands
         public RelayCommand Save { get; set; }
         public RelayCommand Send { get; set; }
         public RelayCommand Receive { get; set; }
-        public RelayCommand CloseApp { get; set; }
+        //public RelayCommand CloseApp { get; set; }
         public RelayCommand Clear { get; set; }
         public RelayCommand OpenLectioTarget { get; set; }
         public RelayCommand GenerateLectioTarget { get; set; }
@@ -246,13 +244,21 @@ namespace LectioDivina.Wydawca.ViewModel
 
         #region private methods
 
+        private void Log(string msg)
+        {
+            if (!String.IsNullOrEmpty(Logs))
+                Logs = Logs + "\r\n";
+            Logs = Logs + DateTime.Now.ToString("HH.mm.ss.fff") + " " + msg;
+            RaisePropertyChanged(() => Logs);
+        }
+
         private void CreateCommands()
         {
             Save = new RelayCommand(SaveLectio);
             Send = new RelayCommand(SendLectioToServer);
             Receive = new RelayCommand(ReceiveLectiosFromServer);
             Clear = new RelayCommand(ClearLectio);
-            CloseApp = new RelayCommand(Close);
+            //CloseApp = new RelayCommand(Close);
             OpenLectioTarget = new RelayCommand(OpenLectioTargetInWord);
             GenerateLectioTarget = new RelayCommand(GenerateLectioTargetDoc);
             SelectTemplate = new RelayCommand(SelectLectioTemplate);
@@ -265,7 +271,7 @@ namespace LectioDivina.Wydawca.ViewModel
 
         private void RemoveThisWeek()
         {
-            dialogService.ShowMessage("Usunąć tydzień "+this.TitlePage.WeekDescription+" ?",
+            dialogService.ShowMessage("Usunąć tydzień " + this.TitlePage.WeekDescription + " ?",
                 "Uwaga",
                 buttonConfirmText: "Tak", buttonCancelText: "Nie",
                 afterHideCallback: (confirmed) =>
@@ -343,7 +349,7 @@ namespace LectioDivina.Wydawca.ViewModel
             /* in fact synchronously - as we use current sync context */
             .StartNew(() =>
             {
-                List<string> issues = lectioDivinaWeek.Validate();
+                List<string> issues = LectioWeek.Validate();
 
                 if (issues.Count > 0)
                 {
@@ -401,7 +407,7 @@ namespace LectioDivina.Wydawca.ViewModel
             {
                 if (!String.IsNullOrEmpty(TitlePage.LectioEbookSourceFolder))
                 {
-                    var ebookLectioGenerator = new OnJestEbookMaker(TitlePage.LectioEbookSourceFolder, lectioDivinaWeek);
+                    var ebookLectioGenerator = new OnJestEbookMaker(TitlePage.LectioEbookSourceFolder, LectioWeek);
 
                     ebookLectioGenerator.Notification += Progress_Notification;
                     TitlePage.LectioEbookTargetFile = ebookLectioGenerator.GenerateEbook();
@@ -417,7 +423,7 @@ namespace LectioDivina.Wydawca.ViewModel
 
             lectioGenerator.Notification += Progress_Notification;
             lectioGenerator.GenerateLectio(TitlePage.LectioTemplateFile, TitlePage.WeekPictureName, TitlePage.LectioTargetFile,
-                lectioDivinaWeek,
+                LectioWeek,
                 Properties.Settings.Default.ShowWord);
 
         }
@@ -474,7 +480,7 @@ namespace LectioDivina.Wydawca.ViewModel
             /* in fact synchronously - as we use current sync context */
             .StartNew(() =>
             {
-                List<string> issues = lectioDivinaWeek.Validate();
+                List<string> issues = LectioWeek.Validate();
 
                 if (issues.Count > 0)
                 {
@@ -523,8 +529,8 @@ namespace LectioDivina.Wydawca.ViewModel
 
             poster.Notification += Progress_Notification;
 
-            poster.SendLectio(lectioDivinaWeek.Title.WeekPictureName, lectioDivinaWeek.Title.LectioTargetFile, TitlePage.LectioEbookTargetFile,
-                                lectioDivinaWeek);
+            poster.SendLectio(LectioWeek.Title.WeekPictureName, LectioWeek.Title.LectioTargetFile, TitlePage.LectioEbookTargetFile,
+                                LectioWeek);
         }
 
         private void ReceiveLectiosFromServer()
@@ -606,7 +612,7 @@ namespace LectioDivina.Wydawca.ViewModel
         {
             try
             {
-                dataService.Save(lectioDivinaWeek);
+                dataService.Save(LectioWeek);
                 IsDirty = false;
                 Log("Lectio zapisane");
             }

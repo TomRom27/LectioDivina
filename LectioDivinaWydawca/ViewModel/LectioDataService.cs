@@ -20,7 +20,7 @@ namespace LectioDivina.Wydawca.ViewModel
 
         DateTime GetNearestSunday();
         string ProposeLectioTargetName(string folder, string weekInvocation, string weekDescription);
-
+        void Save(LectioDivinaMultiWeek lectioDivinaMultiWeek);
     }
 
     public class LectioDataService : ILectioDataService
@@ -84,6 +84,20 @@ namespace LectioDivina.Wydawca.ViewModel
             }
 
             return multiLectioDivina;
+        }
+
+        public void Save(LectioDivinaMultiWeek lectioDivinaMultiWeek)
+        {
+            string xml;
+
+            EnsureDataFolder();
+
+            xml = SerializationHelper.Serialize(lectioDivinaMultiWeek);
+            using (var sw = new System.IO.StreamWriter(GetMultiLectioFileName()))
+            {
+                sw.WriteLine(xml);
+            }
+
         }
 
         public void Save(LectioDivinaWeek lectioDivina)

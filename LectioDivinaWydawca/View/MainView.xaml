@@ -11,19 +11,29 @@
              d:DesignHeight="600" d:DesignWidth="800" Opacity="0.8"
              DataContext="{Binding Main, Source={StaticResource Locator}}">
 
-    <Grid >
+    <Grid Background="#FF96BBD8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*" MaxHeight="75"/>
         </Grid.RowDefinitions>
+        <DockPanel></DockPanel>
+        <DockPanel  Grid.Row="0" >
+            <Button Content="Zapisz" HorizontalAlignment="Left" Width="70" Height="25" Command="{Binding Save}"/>
+            <Button Content="Zamknij" HorizontalAlignment="Left" Width="70" Height="25" Margin="10,0,0,0" Command="{Binding CloseApp}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="LECTIO DIVINA" FontSize="18" FontWeight="Bold" />
+                <TextBlock Text="{Binding ExeVersion}" FontSize="8" Margin="5,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DockPanel>
         <!-- ZIndex is used in order to bring some element more to front, that others (the igher value the more to front) -->
         <!-- Grid inherits from Panel, that's why we refer tpo Panel's ZIndex -->
         <Button Grid.Row="1" Panel.ZIndex="10" Content="Dodaj tydzień" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,3,0" Width="90" Height="25" IsEnabled="True" Command="{Binding AddWeek}"/>
-        <TabControl Grid.Row="1" Panel.ZIndex="1"  ItemsSource="{Binding Weeks}">
+        <TabControl Grid.Row="1" Panel.ZIndex="1"  ItemsSource="{Binding Weeks}" Background="#FF7A9FBF">
             <TabControl.ItemTemplate>
                 <!-- this is the header template-->
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding TitlePage.WeekDescription}" />
                         <TextBlock Text="*" Margin="3,0,0,0" >
                             <TextBlock.Style>
@@ -37,7 +47,7 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <Button Content="X" Margin="10,0,0,0" Command="{Binding Remove}"/>
+                        <Button Content="X" Margin="10,0,0,0" Command="{Binding Remove}" Width="18"  ToolTip="Usuń tydzień"/>
 
 
                     </StackPanel>
@@ -50,5 +60,9 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
+
+        <ScrollViewer Grid.Row="2" Name="LogBoxScroll" VerticalScrollBarVisibility="Auto" Margin="0,5,0,0" >
+            <TextBox Name="LogBox" IsEnabled="False" Text="{Binding Logs}" MinHeight="70" TextChanged="LogBox_TextChanged" Background="#FF96BBD8"/>
+        </ScrollViewer>
     </Grid>
 </UserControl>

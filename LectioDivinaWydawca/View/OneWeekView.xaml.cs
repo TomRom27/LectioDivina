@@ -23,5 +23,10 @@ namespace LectioDivina.Wydawca.View
         {
             InitializeComponent();
         }
+
+        private void LogBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.LogBoxScroll.ScrollToEnd();
+        }
     }
 }
