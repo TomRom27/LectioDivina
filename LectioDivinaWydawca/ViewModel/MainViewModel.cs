@@ -52,6 +52,7 @@ namespace LectioDivina.Wydawca.ViewModel
             CreateCommands();
             InitiateData();
             SubscribeMessages();
+            IsDirty = false;
             Log("Start");
         }
 
@@ -79,11 +80,12 @@ namespace LectioDivina.Wydawca.ViewModel
         }
 
 
+        private bool isDirty;
         private bool IsDirty
         {
             get
             {
-                bool isD = false;
+                bool isD = isDirty;
 
                 foreach (var w in Weeks)
                     isD = isD || w.IsDirty;
@@ -91,8 +93,10 @@ namespace LectioDivina.Wydawca.ViewModel
             }
             set
             {
-                foreach (var w in Weeks)
-                    w.IsDirty = value;
+                if (isDirty != value)
+                {
+                    isDirty = value;
+                }
             }
         }
         #endregion
@@ -139,7 +143,10 @@ namespace LectioDivina.Wydawca.ViewModel
             newWeekVM.Thursday.Day = newWeekVM.Sunday.Day.AddDays(4);
             newWeekVM.Friday.Day = newWeekVM.Sunday.Day.AddDays(5);
             newWeekVM.Saturday.Day = newWeekVM.Sunday.Day.AddDays(6);
+            newWeekVM.IsDirty = true;
+
             Weeks.Add(newWeekVM);
+            IsDirty = true;
 
             Log("Dodano nowy tydzieñ na pozycjê " + (Weeks.IndexOf(newWeekVM) + 1).ToString());
         }
@@ -150,6 +157,7 @@ namespace LectioDivina.Wydawca.ViewModel
             if (weekVM != null)
             {
                 Weeks.Remove(weekVM);
+                IsDirty = true;
                 Log("Usuniêto tydzieñ: " + weekVM.TitlePage.WeekDescription);
             }
             else
@@ -187,6 +195,8 @@ namespace LectioDivina.Wydawca.ViewModel
 
                 dataService.Save(new LectioDivinaMultiWeek() { Weeks = weeks });
                 IsDirty = false;
+                foreach (var w in Weeks)
+                    w.IsDirty = false;
                 Log("Wszystko zapisane");
             }
             catch (Exception ex)
