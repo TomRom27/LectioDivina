@@ -224,21 +224,6 @@ namespace LectioDivina.Wydawca.ViewModel
             }
         }
 
-        private bool isSelected;
-        // uses if an instance is part of list or collection
-        public bool IsSelectedL
-        {
-            get { return isSelected; }
-            set
-            {
-                if (isSelected != value)
-                {
-                    isSelected = value;
-                    RaisePropertyChanged(() => IsSelectedL);
-                    Save.RaiseCanExecuteChanged();
-                }
-            }
-        }
         #region Commands
         public RelayCommand Save { get; set; }
         public RelayCommand Send { get; set; }

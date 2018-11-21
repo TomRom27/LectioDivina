@@ -33,7 +33,7 @@
             <TabControl.ItemTemplate>
                 <!-- this is the header template-->
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" >
+                    <StackPanel Name="stpHeader" Orientation="Horizontal" >
                         <TextBlock Text="{Binding TitlePage.WeekDescription}" />
                         <TextBlock Text="*" Margin="3,0,0,0" >
                             <TextBlock.Style>
@@ -48,22 +48,14 @@
                             </TextBlock.Style>
                         </TextBlock>
                         <Button Content="X" Margin="10,0,0,0" Command="{Binding Remove}" Width="18"  ToolTip="Usuń tydzień"/>
-                        <!--  the below style makes possible customize background color for headers depending on is item selected or not -->
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsSelectedL}" Value="True">
-                                        <Setter Property="Background" Value="#FF95D9E4"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsSelectedL}" Value="False">
-                                        <Setter Property="Background" Value="#FFEEE8E8"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
 
                     </StackPanel>
-
+                    <!--  the below  makes possible customize background color for headers depending on is tab item selected or not -->
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                            <Setter TargetName="stpHeader" Property="Background" Value="#FF95D9E4"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
