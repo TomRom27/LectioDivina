@@ -53,7 +53,7 @@
                     <!--  the below  makes possible customize background color for headers depending on is tab item selected or not -->
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
-                            <Setter TargetName="stpHeader" Property="Background" Value="#FF95D9E4"/>
+                            <Setter TargetName="stpHeader" Property="Background" Value="#FF9CDBE6"/>
                         </DataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>
