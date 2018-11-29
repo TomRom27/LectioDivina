@@ -169,11 +169,6 @@ namespace LectioDivina.Service
             if (elem != null)
                 elem.SetAttributeValue("content", sundayDate.ToString("o"));
 
-            //// set timestamp, xml path is //meta[@name='timestamp']/@content
-            //elem = opfTemplateDoc.SelectFirstElementOfNamedAttribute("meta", "name", "timestamp");
-            //if (elem != null)
-            //    elem.SetAttributeValue("content", sundayDate.ToString("yyyy-MM-dd"));
-
             string opfName = opfTemplateName.Replace(".template", "");
 
             using (XmlWriter writer = XmlWriter.Create(opfName, new XmlWriterSettings() { Indent = true }) )
