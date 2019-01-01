@@ -10,25 +10,15 @@ namespace LectioDivina.Service
     public class OnJestEbookMaker
     {
         private string ebookSourceFilesFolder;
-        private string ebookDestinationFolder;
         private LectioDivinaWeek lectioWeek;
 
         public event EventHandler<NotificationEventArgs> Notification;
 
-        public OnJestEbookMaker(string ebookDestinationDir, LectioDivinaWeek lectioWeek)
+        public OnJestEbookMaker(string ebookDir, LectioDivinaWeek lectioWeek)
         {
-            this.ebookDestinationFolder = ebookDestinationDir;
-            this.ebookSourceFilesFolder = ebookDestinationDir;
+            this.ebookSourceFilesFolder = ebookDir;
 
             this.lectioWeek = lectioWeek;
-        }
-
-        public string FilenameExt
-        {
-            get
-            {
-                return "mobi";
-            }
         }
 
         public string GenerateEbook()
@@ -110,6 +100,7 @@ namespace LectioDivina.Service
 
         private string GenerateMobiFile(DateTime sundayDate)
         {
+            string mobiFilename = "";
             string opfFileName = "";
 
             OnNotification("przygotowuję szablon i okładkę");
@@ -119,8 +110,9 @@ namespace LectioDivina.Service
             OnNotification("generuje plik mobi na podstawie pliku " + opfFileName);
 
             opfFileName = EnsureNeededQuatation(opfFileName);
-            if (startCommand(System.IO.Path.Combine(ebookSourceFilesFolder, Properties.Settings.Default.EbookCmd), opfFileName + " -o ebook.mobi"))
-                return ebookSourceFilesFolder + "\\ebook.mobi";
+            mobiFilename = "ebook" + sundayDate.ToString("yyMMdd") + ".mobi";
+            if (startCommand(System.IO.Path.Combine(ebookSourceFilesFolder, Properties.Settings.Default.EbookCmd), opfFileName + " -o " + mobiFilename))
+                return ebookSourceFilesFolder + "\\" + mobiFilename;
             else
                 return null;
 
@@ -155,7 +147,7 @@ namespace LectioDivina.Service
 
             // add date to title
             XmlElement elem;
-            elem = opfTemplateDoc.SelectFirstNodeByTag("dc:title") as XmlElement;  
+            elem = opfTemplateDoc.SelectFirstNodeByTag("dc:title") as XmlElement;
             if (elem != null)
                 elem.InnerText = elem.InnerText + " - " + Localization.Date2PlStr(sundayDate);
 
@@ -171,7 +163,7 @@ namespace LectioDivina.Service
 
             string opfName = opfTemplateName.Replace(".template", "");
 
-            using (XmlWriter writer = XmlWriter.Create(opfName, new XmlWriterSettings() { Indent = true }) )
+            using (XmlWriter writer = XmlWriter.Create(opfName, new XmlWriterSettings() { Indent = true }))
             {
                 opfTemplateDoc.WriteTo(writer);
             }

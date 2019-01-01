@@ -1,7 +1,8 @@
 ﻿zamykanie Worda po nieudanych próbach!!!
-1.2.0 2018-11-
+1.2.0 2019-01-
 - ebook z datą w meta i okładce
 - praca z więcej niż jednym tygodniem na raz
+- nazwa generowanego ebook'a jest powiązana z niedzielą
 1.1.6 2018-11-06
 - poprawiony błąd pobierania zbyt wielu dni (2 niedziel tj. także następnej)
 - poprawiony błąd nie-ustawiania dnia w tygodniu przy pobieraniu
