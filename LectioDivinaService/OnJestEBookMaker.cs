@@ -1,6 +1,7 @@
 ﻿using LectioDivina.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -9,21 +10,22 @@ namespace LectioDivina.Service
 {
     public class OnJestEbookMaker
     {
-        private string ebookSourceFilesFolder;
+        private string ebookWorkFolder;
+        private string ebookTargetFolder;
         private LectioDivinaWeek lectioWeek;
 
         public event EventHandler<NotificationEventArgs> Notification;
 
-        public OnJestEbookMaker(string ebookDir, LectioDivinaWeek lectioWeek)
+        public OnJestEbookMaker(string ebookDir, LectioDivinaWeek lectioWeek, string targetFolder)
         {
-            this.ebookSourceFilesFolder = ebookDir;
-
+            this.ebookWorkFolder = ebookDir;
+            this.ebookTargetFolder = targetFolder;
             this.lectioWeek = lectioWeek;
         }
 
         public string GenerateEbook()
         {
-            string templateFileName = GetFileWithNamePattern(ebookSourceFilesFolder, "template*.html");
+            string templateFileName = GetFileWithNamePattern(ebookWorkFolder, "template*.html");
             OnNotification("startuje tworzenie ebooka na podstawie szablonu " + templateFileName);
 
             OnJestHtmlMaker postCreator = new OnJestHtmlMaker(Properties.Settings.Default.OnJestPostOneDayKey, Properties.Settings.Default.OnJestPostTemplate);
@@ -111,8 +113,18 @@ namespace LectioDivina.Service
 
             opfFileName = EnsureNeededQuatation(opfFileName);
             mobiFilename = "ebook" + sundayDate.ToString("yyMMdd") + ".mobi";
-            if (startCommand(System.IO.Path.Combine(ebookSourceFilesFolder, Properties.Settings.Default.EbookCmd), opfFileName + " -o " + mobiFilename))
-                return ebookSourceFilesFolder + "\\" + mobiFilename;
+            if (startCommand(System.IO.Path.Combine(ebookWorkFolder, Properties.Settings.Default.EbookCmd), opfFileName + " -o " + mobiFilename))
+            {
+                var workFilename = System.IO.Path.Combine(ebookWorkFolder, mobiFilename);
+                var targetFilename = System.IO.Path.Combine(ebookTargetFolder, mobiFilename);
+
+                if (!workFilename.Equals(targetFilename))
+                {
+                    OnNotification("przesuwam utworzony plik do " + targetFilename);
+                    MoveToName(workFilename, targetFilename);
+                }
+                return targetFilename;
+            }
             else
                 return null;
 
@@ -122,7 +134,7 @@ namespace LectioDivina.Service
         private string CreateActualCover(DateTime sundayDate)
         {
             const string coverTemplatePattern = "*cover_image.template.*";
-            string coverTemplate = GetFileWithNamePattern(ebookSourceFilesFolder, coverTemplatePattern);
+            string coverTemplate = GetFileWithNamePattern(ebookWorkFolder, coverTemplatePattern);
 
             string coverName = coverTemplate.Replace(".template", "");
 
@@ -140,7 +152,7 @@ namespace LectioDivina.Service
         private string CreateActualEbookTemplate(DateTime sundayDate, string coverName)
         {
             const string opfTemplateNamePattern = "*.template.opf";
-            string opfTemplateName = GetFileWithNamePattern(ebookSourceFilesFolder, opfTemplateNamePattern);
+            string opfTemplateName = GetFileWithNamePattern(ebookWorkFolder, opfTemplateNamePattern);
 
             var opfTemplateDoc = new XmlDocument();
             opfTemplateDoc.Load(opfTemplateName);
@@ -178,7 +190,7 @@ namespace LectioDivina.Service
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
 
             proc.EnableRaisingEvents = false;
-            proc.StartInfo.WorkingDirectory = ebookSourceFilesFolder;
+            proc.StartInfo.WorkingDirectory = ebookWorkFolder;
             proc.StartInfo.CreateNoWindow = true;
             proc.StartInfo.FileName = command;
             proc.StartInfo.Arguments = parameters;
@@ -194,6 +206,19 @@ namespace LectioDivina.Service
             {
                 var args = new NotificationEventArgs("ebook: " + notification);
                 Notification.BeginInvoke(this, args, null, null);
+            }
+        }
+
+
+        private void MoveToName(string sourceFilename, string targetFilename)
+        {
+            if (File.Exists(sourceFilename))
+            {
+                if (File.Exists(targetFilename))
+                {
+                    File.Delete(targetFilename);
+                }
+                File.Move(sourceFilename, targetFilename);
             }
         }
 

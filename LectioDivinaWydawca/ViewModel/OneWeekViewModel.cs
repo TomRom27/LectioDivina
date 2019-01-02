@@ -397,7 +397,7 @@ namespace LectioDivina.Wydawca.ViewModel
         private void GenerateLectio()
         {
             dialogService.SetBusy();
-            Log("Rozpoczęto tworzenie Lectio. Czekaj...");
+            Log($"Rozpoczęto tworzenie Lectio dla tygodnia od niedzieli {TitlePage.SundayDate.ToString("dd.MM.yyyy")}. Czekaj...");
 
             if (TitlePage.IsPictureFromShortContemplation)
                 ExtractPictureFromShortContemplation();
@@ -406,7 +406,7 @@ namespace LectioDivina.Wydawca.ViewModel
             {
                 if (!String.IsNullOrEmpty(TitlePage.LectioEbookSourceFolder))
                 {
-                    var ebookLectioGenerator = new OnJestEbookMaker(TitlePage.LectioEbookSourceFolder, LectioWeek);
+                    var ebookLectioGenerator = new OnJestEbookMaker(TitlePage.LectioEbookSourceFolder, LectioWeek, TitlePage.LectioTargetFolder);
 
                     ebookLectioGenerator.Notification += Progress_Notification;
                     TitlePage.LectioEbookTargetFile = ebookLectioGenerator.GenerateEbook();

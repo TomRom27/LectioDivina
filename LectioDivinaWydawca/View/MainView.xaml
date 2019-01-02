@@ -15,7 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*" MaxHeight="75"/>
+            <RowDefinition Height="*" MaxHeight="55"/>
         </Grid.RowDefinitions>
         <DockPanel></DockPanel>
         <DockPanel  Grid.Row="0" >
@@ -69,7 +69,7 @@
         </TabControl>
 
         <ScrollViewer Grid.Row="2" Name="LogBoxScroll" VerticalScrollBarVisibility="Auto" Margin="0,5,0,0" >
-            <TextBox Name="LogBox" IsEnabled="False" Text="{Binding Logs}" MinHeight="70" TextChanged="LogBox_TextChanged" Background="#FF96BBD8"/>
+            <TextBox Name="LogBox" IsEnabled="False" Text="{Binding Logs}" MinHeight="50" TextChanged="LogBox_TextChanged" Background="#FF96BBD8"/>
         </ScrollViewer>
     </Grid>
 </UserControl>
