@@ -1,5 +1,5 @@
 ﻿zamykanie Worda po nieudanych próbach!!!
-1.2.0 2019-01-
+1.2.0 2019-01-14
 - ebook z datą w meta i okładce
 - praca z więcej niż jednym tygodniem na raz
 - nazwa generowanego ebook'a jest powiązana z niedzielą
