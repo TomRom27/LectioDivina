@@ -144,10 +144,10 @@
       <Value Profile="(Default)">slowo</Value>
     </Setting>
     <Setting Name="SenderMail" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">lectio.divina.autor@onet.pl</Value>
+      <Value Profile="(Default)">lectio.divina.autor2019@onet.pl</Value>
     </Setting>
     <Setting Name="SenderPwd" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Strachocin01</Value>
+      <Value Profile="(Default)">Wojnow2019</Value>
     </Setting>
     <Setting Name="EbookCmd" Type="System.String" Scope="Application">
       <Value Profile="(Default)">kindlegen.exe</Value>

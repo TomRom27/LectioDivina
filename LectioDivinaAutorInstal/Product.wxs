@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <!-- never change UpgradeCode !-->
-  <Product Id="*" Name="LectioDivinaAutor" Codepage="1250" Language="1033" Version="1.0.6.0" Manufacturer="TomekR" UpgradeCode="7D321374-BF02-4267-A90F-EEC6C99C5B4F">
+  <Product Id="*" Name="LectioDivinaAutor" Codepage="1250" Language="1033" Version="1.0.7.0" Manufacturer="TomekR" UpgradeCode="F447C383-45D9-4BE8-8FBC-49FC08BBFE24">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <!-- define, how to do the upgrade -->
     <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
-    <Upgrade Id="7D321374-BF02-4267-A90F-EEC6C99C5B4F">
+    <Upgrade Id="F447C383-45D9-4BE8-8FBC-49FC08BBFE24">
       <UpgradeVersion
          Minimum="1.0.0.0" Maximum="99.0.0.0"
          Property="PREVIOUSVERSIONSINSTALLED"

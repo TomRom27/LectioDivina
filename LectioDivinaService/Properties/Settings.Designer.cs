@@ -448,7 +448,7 @@ namespace LectioDivina.Service.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("lectio.divina.autor@onet.pl")]
+        [global::System.Configuration.DefaultSettingValueAttribute("lectio.divina.autor2019@onet.pl")]
         public string SenderMail {
             get {
                 return ((string)(this["SenderMail"]));
@@ -457,7 +457,7 @@ namespace LectioDivina.Service.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Strachocin01")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Wojnow2019")]
         public string SenderPwd {
             get {
                 return ((string)(this["SenderPwd"]));
